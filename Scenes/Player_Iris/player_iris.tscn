@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://b385dsdhhtn6h"]
+[gd_scene load_steps=23 format=3 uid="uid://b385dsdhhtn6h"]
 
 [ext_resource type="Script" path="res://Scenes/Player_Iris/player_iris.gd" id="1_7aruq"]
 [ext_resource type="Texture2D" uid="uid://286olsfwgydw" path="res://Assets/Sprites/Iris/Iris_Main.png" id="1_62eo7"]
@@ -68,6 +68,7 @@ animation = &"iris_idle"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tc4fg"]
 animation = &"iris_run"
+play_mode = 1
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_civlp"]
 advance_mode = 2
@@ -80,14 +81,72 @@ advance_condition = &"walking"
 advance_mode = 2
 advance_condition = &"idle"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ks045"]
+advance_mode = 2
+advance_condition = &"backing"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ava45"]
+advance_mode = 2
+advance_condition = &"walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_exlc2"]
+advance_mode = 2
+advance_condition = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ckydq"]
+advance_mode = 2
+advance_condition = &"backing"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ojuia"]
 states/iris_idle/node = SubResource("AnimationNodeAnimation_pqpq1")
 states/iris_idle/position = Vector2(338.667, 100.444)
 states/iris_run/node = SubResource("AnimationNodeAnimation_tc4fg")
-states/iris_run/position = Vector2(514.667, 99.8519)
-transitions = ["Start", "iris_idle", SubResource("AnimationNodeStateMachineTransition_civlp"), "iris_idle", "iris_run", SubResource("AnimationNodeStateMachineTransition_qebic"), "iris_run", "iris_idle", SubResource("AnimationNodeStateMachineTransition_yun6e")]
+states/iris_run/position = Vector2(543.334, 155.951)
+states/iris_run_back/node = SubResource("AnimationNodeAnimation_tc4fg")
+states/iris_run_back/position = Vector2(544.445, 7.33333)
+transitions = ["Start", "iris_idle", SubResource("AnimationNodeStateMachineTransition_civlp"), "iris_idle", "iris_run", SubResource("AnimationNodeStateMachineTransition_qebic"), "iris_run", "iris_idle", SubResource("AnimationNodeStateMachineTransition_yun6e"), "iris_run", "iris_run_back", SubResource("AnimationNodeStateMachineTransition_ks045"), "iris_run_back", "iris_run", SubResource("AnimationNodeStateMachineTransition_ava45"), "iris_run_back", "iris_idle", SubResource("AnimationNodeStateMachineTransition_exlc2"), "iris_idle", "iris_run_back", SubResource("AnimationNodeStateMachineTransition_ckydq")]
+graph_offset = Vector2(-63, -57)
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_ylx7v"]
+
+[sub_resource type="Animation" id="Animation_1qdtp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.785398]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(4, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:z_index")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
 
 [sub_resource type="Animation" id="Animation_l3l42"]
 resource_name = "SwordOberhau"
@@ -130,45 +189,6 @@ tracks/2/keys = {
 "values": [0, 1]
 }
 
-[sub_resource type="Animation" id="Animation_1qdtp"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-0.785398]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(4, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:z_index")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2n0nc"]
 _data = {
 "RESET": SubResource("Animation_1qdtp"),
@@ -182,6 +202,7 @@ script = ExtResource("1_7aruq")
 texture = ExtResource("1_62eo7")
 hframes = 4
 vframes = 3
+frame = 9
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 3.5)
@@ -197,6 +218,7 @@ tree_root = SubResource("AnimationNodeStateMachine_ojuia")
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource("AnimationNodeStateMachinePlayback_ylx7v")
+parameters/conditions/backing = false
 parameters/conditions/idle = false
 parameters/conditions/walking = false
 
@@ -205,12 +227,12 @@ z_index = -1
 
 [node name="WeaponSlot" type="Node2D" parent="WeaponSlotRoot"]
 z_index = 1
-position = Vector2(4, 1)
-rotation = -0.785398
 
 [node name="Sword" parent="WeaponSlotRoot/WeaponSlot" instance=ExtResource("3_d724v")]
+rotation = 1.5708
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="WeaponSlotRoot/WeaponSlot"]
+process_mode = 4
 libraries = {
 "": SubResource("AnimationLibrary_2n0nc")
 }

@@ -11,10 +11,27 @@ func _physics_process(delta):
 	velocity = input * speed 
 	var isWalking = input != Vector2.ZERO
 	animationTree["parameters/conditions/idle"] = !isWalking
-	animationTree["parameters/conditions/walking"] = isWalking
+
+	if(isWalking):
+		var directionToPointer = global_position - get_global_mouse_position()
+		var nextPostionToPointer = global_position + velocity - get_global_mouse_position()
+		var walkingForward = nextPostionToPointer.length_squared() < directionToPointer.length_squared()
+		animationTree["parameters/conditions/walking"] = walkingForward
+		animationTree["parameters/conditions/backing"] = !walkingForward
+	else:
+		animationTree["parameters/conditions/walking"] = false
+		animationTree["parameters/conditions/backing"] = false
 	
-	if(input.x != 0):
-		sprite.flip_h = input.x < 0
-		weaponSlot.scale = Vector2(-1, 1) if input.x < 0 else Vector2(1,1)
-		
+	try_flip_body()
+	aim_weapon()
 	move_and_slide()
+	
+func try_flip_body():
+	sprite.flip_h = get_global_mouse_position().x < global_position.x
+	
+func aim_weapon():
+	var pointerPosition = get_global_mouse_position()
+	var weaponSlotPosition = weaponSlot.global_position
+	var directionToPointer = pointerPosition - weaponSlotPosition
+	var rotationToPointer = directionToPointer.angle()
+	weaponSlot.rotation = rotationToPointer
