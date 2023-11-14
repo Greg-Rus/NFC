@@ -5,6 +5,7 @@ extends CharacterBody2D
 @onready var animationTree : AnimationTree = $AnimationTree
 @onready var sprite : Sprite2D = $Sprite2D
 @onready var weaponSlot : Node2D = $WeaponSlotRoot
+var isFlipped : bool = false
 
 func _physics_process(delta):
 	var input = Input.get_vector("left", "right", "up", "down")
@@ -27,11 +28,17 @@ func _physics_process(delta):
 	move_and_slide()
 	
 func try_flip_body():
-	sprite.flip_h = get_global_mouse_position().x < global_position.x
+	isFlipped = get_global_mouse_position().x < global_position.x
+	sprite.flip_h = isFlipped
+	weaponSlot.scale.x = -1 if isFlipped else 1
 	
 func aim_weapon():
 	var pointerPosition = get_global_mouse_position()
 	var weaponSlotPosition = weaponSlot.global_position
 	var directionToPointer = pointerPosition - weaponSlotPosition
 	var rotationToPointer = directionToPointer.angle()
-	weaponSlot.rotation = rotationToPointer
+	var correctedAngle = rotationToPointer
+	if(isFlipped):
+		correctedAngle = (PI - rotationToPointer) * -1
+	weaponSlot.rotation = correctedAngle
+	print(correctedAngle)
