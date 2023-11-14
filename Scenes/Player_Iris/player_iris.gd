@@ -39,6 +39,5 @@ func aim_weapon():
 	var rotationToPointer = directionToPointer.angle()
 	var correctedAngle = rotationToPointer
 	if(isFlipped):
-		correctedAngle = (PI - rotationToPointer) * -1
+		correctedAngle = ((PI - rotationToPointer) * -1) if rotationToPointer < 0 else PI + rotationToPointer
 	weaponSlot.rotation = correctedAngle
-	print(correctedAngle)
