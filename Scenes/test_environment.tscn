@@ -1,8 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://bknnl0mkmi5xc"]
+[gd_scene load_steps=3 format=3 uid="uid://bknnl0mkmi5xc"]
 
 [ext_resource type="PackedScene" uid="uid://b385dsdhhtn6h" path="res://Scenes/Player_Iris/player_iris.tscn" id="1_fjtug"]
+[ext_resource type="PackedScene" uid="uid://d3phxbxsff8gc" path="res://Scenes/Enemies/enemy.tscn" id="2_hsaq3"]
 
 [node name="TestEnvironment" type="Node2D"]
 
+[node name="Enemy" parent="." node_paths=PackedStringArray("player") instance=ExtResource("2_hsaq3")]
+position = Vector2(372, 96)
+player = NodePath("../PlayerIris")
+
 [node name="PlayerIris" parent="." instance=ExtResource("1_fjtug")]
-position = Vector2(105, 91)
+position = Vector2(236, 99)
