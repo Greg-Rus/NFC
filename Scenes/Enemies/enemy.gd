@@ -1,3 +1,4 @@
+class_name Enemy
 extends RigidBody2D
 
 enum ENEMY_STATE {IDLE, MOVING, ATTACKING, GETTING_HIT, DYING, DEAD} 
@@ -23,19 +24,23 @@ func _draw() -> void:
 		draw_circle(Vector2.ZERO, attack_range, Color.RED * Color(1,1,1,0.4))
 		draw_line(Vector2.ZERO, directionToPlayer.normalized() * moveForce, Color.RED, 1)
 
-func _ready():
+func _ready() -> void:
 	animationPlayer.play("enemy_idle")
 
-func _process(delta):
+func _process(delta: float) -> void:
 	updateDirectionToPlayer()
 	process_current_state(delta)
 	try_flip_body()
 	if(draw_debug):
 		queue_redraw()
 	
-func _physics_process(delta):
+func _physics_process(delta: float):
 	if(current_state == ENEMY_STATE.MOVING):
 		apply_central_impulse (directionToPlayer.normalized() * moveForce)
+		
+func init(player_node: Player) -> void:
+	if(not player):
+		player = player_node
 	
 func process_current_state(delta: float):
 	match current_state:
@@ -47,6 +52,8 @@ func process_current_state(delta: float):
 			process_attacking()
 		ENEMY_STATE.GETTING_HIT:
 			process_getting_hit(delta)
+		ENEMY_STATE.DYING:
+			process_dying()
 			
 func transitionToState(state: ENEMY_STATE):
 	current_state = state
@@ -60,6 +67,10 @@ func transitionToState(state: ENEMY_STATE):
 			pass
 		ENEMY_STATE.GETTING_HIT:
 			animationPlayer.play("enemy_damage")
+		ENEMY_STATE.DYING:
+			animationPlayer.play("enemy_die")
+		ENEMY_STATE.DEAD:
+			queue_free()
 	
 func process_idle():
 	if(directionToPlayer.length() <= detection_range):
@@ -80,6 +91,10 @@ func process_getting_hit(delta: float):
 	if(hit_stun_timer >= hit_stun_time):
 		transitionToState(ENEMY_STATE.MOVING)
 		hit_stun_timer = 0
+		
+func process_dying():
+	if(!animationPlayer.is_playing()):
+		transitionToState(ENEMY_STATE.DEAD)
 	
 func updateDirectionToPlayer() :
 	directionToPlayer = player.position - position
@@ -89,6 +104,14 @@ func try_flip_body():
 	sprite.flip_h = isFlipped
 
 func take_damage(damage: int):
-	hit_points -= damage
-	transitionToState(ENEMY_STATE.GETTING_HIT)
-	
+	hit_points = max(0, hit_points - damage)
+	if(hit_points > 0):
+		transitionToState(ENEMY_STATE.GETTING_HIT)
+	else:
+		transitionToState(ENEMY_STATE.DYING)
+	EventBus.damage_taken.emit(damage, global_position)
+	#var new_floating_test = floating_text_scene.instantiate()
+	#add_child(new_floating_test)
+	#var offset = Vector2(randi_range(-10, 10) * 2, -10 - randi_range(5, 10))
+	#new_floating_test.init(str(damage), offset)
+

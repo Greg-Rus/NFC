@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d3phxbxsff8gc"]
+[gd_scene load_steps=12 format=3 uid="uid://d3phxbxsff8gc"]
 
 [ext_resource type="Script" path="res://Scenes/Enemies/enemy.gd" id="1_gqnbu"]
 [ext_resource type="Texture2D" uid="uid://cut20pimm2fy4" path="res://Assets/Sprites/Enemies/Enemy_006_D.png" id="1_ijbqa"]
@@ -116,20 +116,16 @@ _data = {
 "enemy_move": SubResource("Animation_tmleh")
 }
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mx3h0"]
-animation = &"enemy_idle"
-
 [node name="Enemy" type="RigidBody2D"]
 collision_layer = 3
 collision_mask = 2
-inertia = 10.52
 physics_material_override = SubResource("PhysicsMaterial_djxgt")
+inertia = 10.52
 lock_rotation = true
 linear_damp = 5.0
 script = ExtResource("1_gqnbu")
 moveForce = 6.0
 attack_range = 20.0
-draw_debug = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -11)
@@ -145,7 +141,3 @@ shape = SubResource("CircleShape2D_xbi40")
 libraries = {
 "": SubResource("AnimationLibrary_auedx")
 }
-
-[node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource("AnimationNodeAnimation_mx3h0")
-anim_player = NodePath("../AnimationPlayer")

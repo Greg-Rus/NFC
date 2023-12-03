@@ -20,7 +20,6 @@ func _process(delta):
 func set_weapon_rotation(angle: float):
 	if(!isAttacking):
 		rotation = angle
-		print(str(weaponSlot.global_rotation))
 		
 	if(weaponSlot.global_rotation > -3 && weaponSlot.global_rotation < 0):
 		weaponSlot.z_index = -1

@@ -1,9 +1,9 @@
-[gd_scene load_steps=25 format=3 uid="uid://b385dsdhhtn6h"]
+[gd_scene load_steps=24 format=3 uid="uid://b385dsdhhtn6h"]
 
-[ext_resource type="Script" path="res://Scenes/Player_Iris/player_iris.gd" id="1_7aruq"]
-[ext_resource type="Texture2D" uid="uid://286olsfwgydw" path="res://Assets/Sprites/Iris/Iris_Main.png" id="1_62eo7"]
-[ext_resource type="PackedScene" uid="uid://1gdvtd6tre6m" path="res://Scenes/Weapons/sword.tscn" id="3_d724v"]
-[ext_resource type="Script" path="res://Scenes/Player_Iris/WeaponSlot.gd" id="3_wjtgm"]
+[ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_ahcg7"]
+[ext_resource type="Texture2D" uid="uid://286olsfwgydw" path="res://Assets/Sprites/Iris/Iris_Main.png" id="2_27228"]
+[ext_resource type="Script" path="res://Scenes/Player/WeaponSlot.gd" id="3_3fei1"]
+[ext_resource type="PackedScene" uid="uid://1gdvtd6tre6m" path="res://Scenes/Weapons/sword.tscn" id="4_gasyu"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pnlfx"]
 radius = 3.5
@@ -108,8 +108,6 @@ states/iris_run_back/node = SubResource("AnimationNodeAnimation_tc4fg")
 states/iris_run_back/position = Vector2(543.902, 8)
 transitions = ["Start", "iris_idle", SubResource("AnimationNodeStateMachineTransition_civlp"), "iris_idle", "iris_run", SubResource("AnimationNodeStateMachineTransition_qebic"), "iris_run", "iris_idle", SubResource("AnimationNodeStateMachineTransition_yun6e"), "iris_run", "iris_run_back", SubResource("AnimationNodeStateMachineTransition_ks045"), "iris_run_back", "iris_run", SubResource("AnimationNodeStateMachineTransition_ava45"), "iris_run_back", "iris_idle", SubResource("AnimationNodeStateMachineTransition_exlc2"), "iris_idle", "iris_run_back", SubResource("AnimationNodeStateMachineTransition_ckydq")]
 graph_offset = Vector2(-63, -57)
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_ylx7v"]
 
 [sub_resource type="Animation" id="Animation_1qdtp"]
 length = 0.2
@@ -268,10 +266,12 @@ _data = {
 }
 
 [node name="PlayerIris" type="CharacterBody2D"]
-script = ExtResource("1_7aruq")
+z_index = 10
+collision_mask = 5
+script = ExtResource("1_ahcg7")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_62eo7")
+texture = ExtResource("2_27228")
 hframes = 4
 vframes = 3
 
@@ -285,29 +285,33 @@ libraries = {
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_bj4su")
+}
 tree_root = SubResource("AnimationNodeStateMachine_ojuia")
 anim_player = NodePath("../AnimationPlayer")
-active = true
-parameters/playback = SubResource("AnimationNodeStateMachinePlayback_ylx7v")
 parameters/conditions/backing = false
 parameters/conditions/idle = false
 parameters/conditions/walking = false
 
 [node name="WeaponSlotRoot" type="Node2D" parent="."]
 position = Vector2(0, 1)
-script = ExtResource("3_wjtgm")
+script = ExtResource("3_3fei1")
 
 [node name="WeaponSlot" type="Node2D" parent="WeaponSlotRoot"]
 z_index = 1
 position = Vector2(0, 1)
 rotation = -0.785398
 
-[node name="Sword" parent="WeaponSlotRoot/WeaponSlot" instance=ExtResource("3_d724v")]
+[node name="Sword" parent="WeaponSlotRoot/WeaponSlot" instance=ExtResource("4_gasyu")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="WeaponSlotRoot/WeaponSlot"]
 process_mode = 3
 libraries = {
 "": SubResource("AnimationLibrary_2n0nc")
 }
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
 
 [connection signal="attack_action" from="WeaponSlotRoot" to="WeaponSlotRoot/WeaponSlot/Sword" method="_on_weapon_slot_root_attack_action"]

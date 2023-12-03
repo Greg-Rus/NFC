@@ -1,3 +1,4 @@
+class_name Player
 extends CharacterBody2D
 
 @export var speed : float = 100
@@ -30,7 +31,6 @@ func _physics_process(delta):
 func try_flip_body():
 	isFlipped = get_global_mouse_position().x < global_position.x
 	sprite.flip_h = isFlipped
-	#weaponSlot.scale.x = -1 if isFlipped else 1
 	
 func aim_weapon():
 	var pointerPosition = get_global_mouse_position()
@@ -38,6 +38,4 @@ func aim_weapon():
 	var directionToPointer = pointerPosition - weaponSlotPosition
 	var rotationToPointer = directionToPointer.angle()
 	var correctedAngle = rotationToPointer
-#	if(isFlipped):
-#		correctedAngle = ((PI - rotationToPointer) * -1) if rotationToPointer < 0 else PI + rotationToPointer
 	weaponSlot.set_weapon_rotation(correctedAngle) 

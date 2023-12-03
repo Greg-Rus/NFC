@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://mbah01mkumri"]
+
+[ext_resource type="Script" path="res://Scenes/GameLogic/floating_text_service.gd" id="1_6npf5"]
+
+[node name="FloatingTextService" type="Node2D"]
+script = ExtResource("1_6npf5")
