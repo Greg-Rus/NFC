@@ -5,7 +5,8 @@ enum ENEMY_STATE {IDLE, MOVING, ATTACKING, GETTING_HIT, DYING, DEAD}
 
 @onready var animationPlayer : AnimationPlayer = $AnimationPlayer
 @onready var sprite : Sprite2D = $Sprite2D
-@export var moveForce : float
+@export var moveSpeed : float
+@export var acceleration: float
 @export var detection_range : float = 100
 @export var attack_range : float = 30
 @export var hit_points : float = 5
@@ -22,7 +23,7 @@ func _draw() -> void:
 	if(draw_debug):
 		draw_circle(Vector2.ZERO, detection_range, Color.BLUE * Color(1,1,1,0.3))
 		draw_circle(Vector2.ZERO, attack_range, Color.RED * Color(1,1,1,0.4))
-		draw_line(Vector2.ZERO, directionToPlayer.normalized() * moveForce, Color.RED, 1)
+		draw_line(Vector2.ZERO, directionToPlayer.normalized() * moveSpeed, Color.RED, 1)
 
 func _ready() -> void:
 	animationPlayer.play("enemy_idle")
@@ -36,16 +37,18 @@ func _process(delta: float) -> void:
 	
 func _physics_process(delta: float):
 	if(current_state == ENEMY_STATE.MOVING):
-		move(delta)
+		velocity = velocity.lerp(directionToPlayer.normalized() * moveSpeed, delta * acceleration)
+		move_and_slide()
+		
+	if(current_state == ENEMY_STATE.GETTING_HIT):
+		velocity = velocity.lerp(Vector2.ZERO, delta * acceleration)
+		var collision = move_and_collide(velocity * delta)
+		if collision:
+			velocity = velocity.bounce(collision.get_normal()) * 0.5
 		
 func init(player_node: Player) -> void:
 	if(not player):
 		player = player_node
-		
-func move(delta: float) -> void:
-	#apply_central_impulse (directionToPlayer.normalized() * moveForce)
-	velocity = directionToPlayer.normalized() * moveForce * delta * Constants.DELTA_MULTIPLIER
-	move_and_slide()
 	
 func process_current_state(delta: float):
 	match current_state:
@@ -96,11 +99,6 @@ func process_getting_hit(delta: float):
 	if(hit_stun_timer >= hit_stun_time):
 		transitionToState(ENEMY_STATE.MOVING)
 		hit_stun_timer = 0
-	else:
-		var collision = move_and_collide(velocity * delta)
-		if collision:
-			velocity = velocity.bounce(collision.get_normal()) * Constants.DELTA_MULTIPLIER
-			print("Bounced velocity: " + str(velocity))
 		
 func process_dying():
 	if(!animationPlayer.is_playing()):
