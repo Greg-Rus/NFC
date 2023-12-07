@@ -1,5 +1,5 @@
 class_name Enemy
-extends RigidBody2D
+extends CharacterBody2D
 
 enum ENEMY_STATE {IDLE, MOVING, ATTACKING, GETTING_HIT, DYING, DEAD} 
 
@@ -36,11 +36,16 @@ func _process(delta: float) -> void:
 	
 func _physics_process(delta: float):
 	if(current_state == ENEMY_STATE.MOVING):
-		apply_central_impulse (directionToPlayer.normalized() * moveForce)
+		move(delta)
 		
 func init(player_node: Player) -> void:
 	if(not player):
 		player = player_node
+		
+func move(delta: float) -> void:
+	#apply_central_impulse (directionToPlayer.normalized() * moveForce)
+	velocity = directionToPlayer.normalized() * moveForce * delta * Constants.DELTA_MULTIPLIER
+	move_and_slide()
 	
 func process_current_state(delta: float):
 	match current_state:
@@ -91,6 +96,11 @@ func process_getting_hit(delta: float):
 	if(hit_stun_timer >= hit_stun_time):
 		transitionToState(ENEMY_STATE.MOVING)
 		hit_stun_timer = 0
+	else:
+		var collision = move_and_collide(velocity * delta)
+		if collision:
+			velocity = velocity.bounce(collision.get_normal()) * Constants.DELTA_MULTIPLIER
+			print("Bounced velocity: " + str(velocity))
 		
 func process_dying():
 	if(!animationPlayer.is_playing()):
@@ -103,8 +113,9 @@ func try_flip_body():
 	isFlipped = directionToPlayer.x < 0
 	sprite.flip_h = isFlipped
 
-func take_damage(damage: int):
+func take_damage(damage: int, damage_direction: Vector2):
 	hit_points = max(0, hit_points - damage)
+	velocity = damage_direction
 	if(hit_points > 0):
 		transitionToState(ENEMY_STATE.GETTING_HIT)
 	else:

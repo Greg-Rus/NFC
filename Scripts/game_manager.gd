@@ -14,7 +14,6 @@ func init(main : Node2D) -> void:
 	main_node = main
 	enemy_spawn_timer = Timer.new()
 	add_child(enemy_spawn_timer)	
-	print(screensize)
 	
 func load_environemnt() -> void:
 	current_environment = environment_scene.instantiate() as Environemnt
@@ -22,7 +21,9 @@ func load_environemnt() -> void:
 	player = player_scene.instantiate() as Player
 	current_environment.add_player(player)
 	enemy_spawn_timer.timeout.connect(on_enemy_spawn_timer)
-	enemy_spawn_timer.start(3)
+	for i in 30:
+		on_enemy_spawn_timer()
+	#enemy_spawn_timer.start(3)
 	
 func on_enemy_spawn_timer():
 	var spawn_position = Vector2(randi_range(0, screensize.x), randi_range(screensize.y, 0))
@@ -30,6 +31,6 @@ func on_enemy_spawn_timer():
 	new_enemy.global_position = spawn_position
 	new_enemy.init(player)
 	current_environment.add_enemy(new_enemy)
-	enemy_spawn_timer.start(3)
+	#enemy_spawn_timer.start(3)
 #	var direction_to_player = player.global_position - spawn_position
 

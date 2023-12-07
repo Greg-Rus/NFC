@@ -267,8 +267,10 @@ _data = {
 
 [node name="PlayerIris" type="CharacterBody2D"]
 z_index = 10
-collision_mask = 5
+collision_mask = 12
+motion_mode = 1
 script = ExtResource("1_ahcg7")
+speed = 50.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_27228")
