@@ -21,8 +21,9 @@ func load_environemnt() -> void:
 	player = player_scene.instantiate() as Player
 	current_environment.add_player(player)
 	enemy_spawn_timer.timeout.connect(on_enemy_spawn_timer)
-	for i in 30:
-		on_enemy_spawn_timer()
+	spawn_test_enemy()
+	#for i in 30:
+		#on_enemy_spawn_timer()
 	#enemy_spawn_timer.start(3)
 	
 func on_enemy_spawn_timer():
@@ -33,4 +34,15 @@ func on_enemy_spawn_timer():
 	current_environment.add_enemy(new_enemy)
 	#enemy_spawn_timer.start(3)
 #	var direction_to_player = player.global_position - spawn_position
+
+func spawn_test_enemy():
+	var new_enemy = enemy_scene.instantiate() as Enemy
+	new_enemy.global_position = player.position + Vector2(40, 0)
+	new_enemy.detection_range = 0
+	new_enemy.attack_range = 0
+	new_enemy.moveSpeed = 0
+	new_enemy.hit_points = 99999
+	new_enemy.init(player)
+	current_environment.add_enemy(new_enemy)
+	
 

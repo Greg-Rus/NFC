@@ -111,16 +111,12 @@ func try_flip_body():
 	isFlipped = directionToPlayer.x < 0
 	sprite.flip_h = isFlipped
 
-func take_damage(damage: int, damage_direction: Vector2):
+func take_damage(damage: int, damage_direction: Vector2, damage_type: Constants.DAMAGE_TYPE):
 	hit_points = max(0, hit_points - damage)
 	velocity = damage_direction
 	if(hit_points > 0):
 		transitionToState(ENEMY_STATE.GETTING_HIT)
 	else:
 		transitionToState(ENEMY_STATE.DYING)
-	EventBus.damage_taken.emit(damage, global_position)
-	#var new_floating_test = floating_text_scene.instantiate()
-	#add_child(new_floating_test)
-	#var offset = Vector2(randi_range(-10, 10) * 2, -10 - randi_range(5, 10))
-	#new_floating_test.init(str(damage), offset)
+	EventBus.damage_taken.emit(damage, global_position, damage_type)
 

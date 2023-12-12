@@ -4,10 +4,10 @@
 [ext_resource type="Texture2D" uid="uid://dpi8x42pe605y" path="res://Assets/Sprites/Items/Sword.png" id="1_tlbbo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_monuu"]
-size = Vector2(4, 11)
+size = Vector2(4, 10)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p2j7v"]
-size = Vector2(4, 4)
+size = Vector2(5, 4)
 
 [node name="Sword" type="Node2D"]
 script = ExtResource("1_0sj3y")
@@ -22,24 +22,28 @@ texture = ExtResource("1_tlbbo")
 region_rect = Rect2(16, 0, 16, 16)
 
 [node name="HitZone" type="Area2D" parent="Sprite2D"]
-position = Vector2(-6.01041, 6.01041)
+position = Vector2(0.707107, -0.707107)
 rotation = 0.785398
 collision_layer = 2
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/HitZone"]
-position = Vector2(1.13687e-12, -9)
+position = Vector2(0, 1)
+scale = Vector2(0.999999, 0.999999)
 shape = SubResource("RectangleShape2D_monuu")
 
 [node name="CritZone" type="Area2D" parent="Sprite2D"]
-position = Vector2(8.48528, -8.48528)
+position = Vector2(5.65686, -5.65685)
 rotation = -0.785398
 collision_layer = 2
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/CritZone"]
-position = Vector2(-4, -6.25849e-07)
+position = Vector2(-0.5, 1.90735e-06)
 shape = SubResource("RectangleShape2D_p2j7v")
+
+[node name="Tip" type="Node2D" parent="."]
+position = Vector2(18, 0)
 
 [connection signal="body_entered" from="Sprite2D/HitZone" to="." method="on_hit_zone_enter"]
 [connection signal="body_exited" from="Sprite2D/HitZone" to="." method="on_hit_zone_exit"]

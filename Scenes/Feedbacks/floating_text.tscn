@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cp5h67p46263y"]
+[gd_scene load_steps=8 format=3 uid="uid://cp5h67p46263y"]
 
 [ext_resource type="Script" path="res://Scenes/Feedbacks/floating_text.gd" id="1_c575n"]
 
@@ -31,6 +31,72 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0.3, 0.3)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_5kony"]
+resource_name = "crit"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.3, 0.3), Vector2(1.5, 1.5), Vector2(1.5, 1.5), Vector2(1.2, 1.2), Vector2(0.9, 0.9), Vector2(1.1, 1.1), Vector2(1, 1), Vector2(1, 1), Vector2(1e-05, 1e-05)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.174533, 0.174533, -0.174533, 0.174533, -0.122173, 0.122173, -0.0872665, 0.0872665, -0.0523599, 0.0523599, 0.0]
 }
 
 [sub_resource type="Animation" id="Animation_2datq"]
@@ -74,16 +140,62 @@ tracks/2/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_5wd2n"]
+resource_name = "glance"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 1),
+"transitions": PackedFloat32Array(1, 2.82843, 1),
+"update": 0,
+"values": [Vector2(0.3, 0.3), Vector2(0.8, 0.8), Vector2(0, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4xke7"]
 _data = {
 "RESET": SubResource("Animation_36ove"),
-"float_text": SubResource("Animation_2datq")
+"crit": SubResource("Animation_5kony"),
+"float_text": SubResource("Animation_2datq"),
+"glance": SubResource("Animation_5wd2n")
 }
 
 [node name="FloatingText" type="Node2D"]
 z_index = 100
 scale = Vector2(0.3, 0.3)
 script = ExtResource("1_c575n")
+normal_hit_color = Color(1, 1, 1, 1)
+crit_hit_color = Color(1, 0, 0, 1)
+glancing_hit_color = Color(0.345098, 0.345098, 0.345098, 1)
 
 [node name="Label" type="Label" parent="."]
 offset_left = -19.0

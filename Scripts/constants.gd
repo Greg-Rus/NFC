@@ -1,3 +1,4 @@
 extends Node
 
 var DELTA_MULTIPLIER : float = 100
+enum DAMAGE_TYPE {NORMAL, CRIT, GLANCE}
