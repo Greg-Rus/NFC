@@ -119,8 +119,3 @@ func take_damage(damage: int, damage_direction: Vector2):
 	else:
 		transitionToState(ENEMY_STATE.DYING)
 	EventBus.damage_taken.emit(damage, global_position)
-	#var new_floating_test = floating_text_scene.instantiate()
-	#add_child(new_floating_test)
-	#var offset = Vector2(randi_range(-10, 10) * 2, -10 - randi_range(5, 10))
-	#new_floating_test.init(str(damage), offset)
-

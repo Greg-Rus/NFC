@@ -9,13 +9,6 @@ func _on_area_2d_body_entered(body):
 		direation_to_body = direation_to_body.normalized() * hit_force
 		var enemy = body as Enemy
 		enemy.take_damage(1, direation_to_body)
-		
-		#var rb = body as RigidBody2D
-		#var direation_to_body = body.position - global_position
-		#rb.add_constant_force(rb.linear_velocity * -1)
-		#rb.apply_impulse(direation_to_body.normalized() * hit_force)
-		#if "take_damage" in body:
-			#body.take_damage(1)
 
 func _on_weapon_slot_root_attack_action(is_attacking):
 	isAttacking = is_attacking
