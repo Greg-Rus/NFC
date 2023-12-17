@@ -8,10 +8,10 @@ extends CharacterBody2D
 @onready var weaponSlot : Node2D = $WeaponSlotRoot
 var isFlipped : bool = false
 
-func _physics_process(delta: float):
-	var input = Input.get_vector("left", "right", "up", "down")
+func _physics_process(delta: float) -> void:
+	var input : Vector2 = Input.get_vector("left", "right", "up", "down")
 	velocity = input * speed * delta * Constants.DELTA_MULTIPLIER
-	var isWalking = input != Vector2.ZERO
+	var isWalking : bool = input != Vector2.ZERO
 	animationTree["parameters/conditions/idle"] = !isWalking
 
 	if(isWalking):

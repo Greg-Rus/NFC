@@ -1,7 +1,8 @@
 extends Node
 
 @onready var enemy_scene = preload("res://Scenes/Enemies/enemy.tscn")
-@onready var environment_scene = preload("res://Scenes/Levels/test_environment.tscn")
+#@onready var environment_scene = preload("res://Scenes/Levels/test_environment.tscn")
+@onready var environment_scene = preload("res://Scenes/Levels/test_open_survival_map.tscn")
 @onready var player_scene = preload("res://Scenes/Player/player_iris.tscn")
 @onready var screensize : Vector2 = get_viewport().get_visible_rect().size
 
@@ -21,8 +22,8 @@ func load_environemnt() -> void:
 	player = player_scene.instantiate() as Player
 	current_environment.add_player(player)
 	enemy_spawn_timer.timeout.connect(on_enemy_spawn_timer)
-	for i in 30:
-		on_enemy_spawn_timer()
+	#for i in 30:
+		#on_enemy_spawn_timer()
 	#enemy_spawn_timer.start(3)
 	
 func on_enemy_spawn_timer():
