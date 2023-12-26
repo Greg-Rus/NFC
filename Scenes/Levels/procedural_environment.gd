@@ -21,12 +21,11 @@ func _ready() -> void:
 	noise.seed = randi()
 	noise.frequency = 1
 	noise.fractal_gain = 0
-	print(THRESHOLD_RATIO)
-	
-func init(bounds: Vector2i) -> void:
-	map_dimensions = bounds
 	
 func _process(_delta) -> void:
+	update_tiles_around_player_if_necessary()
+		
+func update_tiles_around_player_if_necessary() -> void:
 	var player_tile_position = tile_map.local_to_map(player.position)
 	if(player_tile_position != player_tile):
 		player_tile = player_tile_position
@@ -75,3 +74,18 @@ func spawn_deco_over_tile(map_position : Vector2i, noise: int) -> void:
 		
 func is_out_of_map_bounds(cell : Vector2i) -> bool:
 	return cell.x < bounds_min.x || cell.y < bounds_min.y || cell.x >= bounds_max.x || cell.y >= bounds_max.y
+	
+func add_player(player: Player) -> void:
+	super(player)
+	update_tiles_around_player_if_necessary()
+	
+func add_enemy(enemy: Enemy) -> void:
+	super(enemy)
+	var world_dimensions = world_bounds_max - world_bounds_min
+	var random_in_world_bounds = Vector2(randf_range(0, world_dimensions.x), randf_range(0, world_dimensions.y))
+	var edge = Vector2(0, 1) if randi() % 2 == 0 else Vector2(1, 0)
+	var random_on_edge = Vector2(random_in_world_bounds.x * edge.x, random_in_world_bounds.y * edge.y)
+	var position = world_bounds_min + random_on_edge if randi() % 2 == 0 else world_bounds_max - random_on_edge
+	enemy.global_position = position
+	enemy.transitionToState(Enemy.ENEMY_STATE.MOVING)
+	print(position)
