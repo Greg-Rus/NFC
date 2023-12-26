@@ -28,11 +28,11 @@ func _physics_process(delta: float) -> void:
 	aim_weapon()
 	move_and_slide()
 	
-func try_flip_body():
+func try_flip_body() -> void:
 	isFlipped = get_global_mouse_position().x < global_position.x
 	sprite.flip_h = isFlipped
 	
-func aim_weapon():
+func aim_weapon() -> void:
 	var pointerPosition = get_global_mouse_position()
 	var weaponSlotPosition = weaponSlot.global_position
 	var directionToPointer = pointerPosition - weaponSlotPosition

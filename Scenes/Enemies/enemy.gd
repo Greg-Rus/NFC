@@ -5,6 +5,8 @@ enum ENEMY_STATE {IDLE, MOVING, ATTACKING, GETTING_HIT, DYING, DEAD}
 
 @onready var animationPlayer : AnimationPlayer = $AnimationPlayer
 @onready var sprite : Sprite2D = $Sprite2D
+@onready var collisionShape : CollisionShape2D = $CollisionShape2D
+@export var deadColor : Color
 @export var moveSpeed : float
 @export var acceleration: float
 @export var detection_range : float = 100
@@ -35,7 +37,7 @@ func _process(delta: float) -> void:
 	if(draw_debug):
 		queue_redraw()
 	
-func _physics_process(delta: float):
+func _physics_process(delta: float) -> void:
 	if(current_state == ENEMY_STATE.MOVING):
 		velocity = velocity.lerp(directionToPlayer.normalized() * moveSpeed, delta * acceleration)
 		move_and_slide()
@@ -50,7 +52,7 @@ func init(player_node: Player) -> void:
 	if(not player):
 		player = player_node
 	
-func process_current_state(delta: float):
+func process_current_state(delta: float) -> void:
 	match current_state:
 		ENEMY_STATE.IDLE:
 			process_idle()
@@ -63,7 +65,7 @@ func process_current_state(delta: float):
 		ENEMY_STATE.DYING:
 			process_dying()
 			
-func transitionToState(state: ENEMY_STATE):
+func transitionToState(state: ENEMY_STATE) -> void:
 	current_state = state
 	animationPlayer.stop()
 	match state:
@@ -77,41 +79,44 @@ func transitionToState(state: ENEMY_STATE):
 			animationPlayer.play("enemy_damage")
 		ENEMY_STATE.DYING:
 			animationPlayer.play("enemy_die")
+			collisionShape.set_deferred("disabled", true)
+			sprite.modulate = deadColor
 		ENEMY_STATE.DEAD:
+			--GameManager.enemyCount
 			queue_free()
 	
-func process_idle():
+func process_idle() -> void:
 	if(directionToPlayer.length() <= detection_range):
 		transitionToState(ENEMY_STATE.MOVING)
 	
-func move_to_player(delta: float):
+func move_to_player(delta: float) -> void:
 	if(directionToPlayer.length() <= attack_range):
 		transitionToState(ENEMY_STATE.ATTACKING)
 		
-func process_attacking():
+func process_attacking() -> void:
 	if(!animationPlayer.is_playing()):
 			animationPlayer.play("enemy_attack")
 	if(directionToPlayer.length() > attack_range):
 		transitionToState(ENEMY_STATE.MOVING)
 		
-func process_getting_hit(delta: float):
+func process_getting_hit(delta: float) -> void:
 	hit_stun_timer += delta
 	if(hit_stun_timer >= hit_stun_time):
 		transitionToState(ENEMY_STATE.MOVING)
 		hit_stun_timer = 0
 		
-func process_dying():
+func process_dying() -> void:
 	if(!animationPlayer.is_playing()):
 		transitionToState(ENEMY_STATE.DEAD)
 	
-func updateDirectionToPlayer() :
+func updateDirectionToPlayer() -> void:
 	directionToPlayer = player.position - position
 	
-func try_flip_body():
+func try_flip_body() -> void:
 	isFlipped = directionToPlayer.x < 0
 	sprite.flip_h = isFlipped
 
-func take_damage(damage: int, damage_direction: Vector2):
+func take_damage(damage: int, damage_direction: Vector2) -> void:
 	hit_points = max(0, hit_points - damage)
 	velocity = damage_direction
 	if(hit_points > 0):
