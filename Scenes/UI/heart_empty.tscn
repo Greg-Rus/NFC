@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://8cxyx7e7ojyn"]
+
+[ext_resource type="Texture2D" uid="uid://bk7oosha3ybt6" path="res://Assets/Sprites/UI/Hearts.png" id="1_c62yq"]
+
+[node name="HeartEmpty" type="Sprite2D"]
+texture = ExtResource("1_c62yq")
+region_enabled = true
+region_rect = Rect2(64, 0, 16, 16)

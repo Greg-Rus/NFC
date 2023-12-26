@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://5dmdfb88f77a"]
+
+[ext_resource type="PackedScene" uid="uid://8cxyx7e7ojyn" path="res://Scenes/UI/heart_empty.tscn" id="1_qe0vw"]
+
+[node name="UI_Heart_Empty" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HeartEmpty" parent="." instance=ExtResource("1_qe0vw")]

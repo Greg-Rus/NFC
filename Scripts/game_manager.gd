@@ -5,7 +5,7 @@ extends Node
 @onready var environment_scene = preload("res://Scenes/Levels/test_open_survival_map.tscn")
 @onready var player_scene = preload("res://Scenes/Player/player_iris.tscn")
 @onready var screensize : Vector2 = get_viewport().get_visible_rect().size
-@export var enemyCount : int = 0
+@export var enemy_count : int
 
 var enemy_spawn_timer: Timer
 var current_environment : Environemnt
@@ -32,9 +32,9 @@ func on_enemy_spawn_timer() -> void:
 	enemy_spawn_timer.start(1)
 
 func spawn_enemy() -> void:
-	if(enemyCount >= 100):
+	if(enemy_count >= 100):
 		return
 	var new_enemy = enemy_scene.instantiate() as Enemy
 	new_enemy.init(player)
 	current_environment.add_enemy(new_enemy)
-	++enemyCount
+	enemy_count += 1

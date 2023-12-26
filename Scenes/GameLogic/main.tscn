@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ccfxwge1n1qke"]
+[gd_scene load_steps=4 format=3 uid="uid://ccfxwge1n1qke"]
 
 [ext_resource type="PackedScene" uid="uid://mbah01mkumri" path="res://Scenes/GameLogic/floating_text_service.tscn" id="1_gjwiv"]
 [ext_resource type="Script" path="res://Scripts/Main.gd" id="1_ui1g6"]
+[ext_resource type="PackedScene" uid="uid://cbtek65dqb47s" path="res://Scenes/UI/UI_Canvas.tscn" id="3_kvgaq"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ui1g6")
@@ -9,3 +10,5 @@ script = ExtResource("1_ui1g6")
 [node name="Services" type="Node2D" parent="."]
 
 [node name="FloatingTextService" parent="Services" instance=ExtResource("1_gjwiv")]
+
+[node name="CanvasLayer" parent="Services" instance=ExtResource("3_kvgaq")]

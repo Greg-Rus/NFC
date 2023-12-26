@@ -74,7 +74,7 @@ func transitionToState(state: ENEMY_STATE) -> void:
 		ENEMY_STATE.MOVING:
 			animationPlayer.play("enemy_move")
 		ENEMY_STATE.ATTACKING:	
-			pass
+			animationPlayer.play("enemy_attack")
 		ENEMY_STATE.GETTING_HIT:
 			animationPlayer.play("enemy_damage")
 		ENEMY_STATE.DYING:
@@ -82,7 +82,7 @@ func transitionToState(state: ENEMY_STATE) -> void:
 			collisionShape.set_deferred("disabled", true)
 			sprite.modulate = deadColor
 		ENEMY_STATE.DEAD:
-			--GameManager.enemyCount
+			GameManager.enemy_count -= 1
 			queue_free()
 	
 func process_idle() -> void:
@@ -95,9 +95,10 @@ func move_to_player(delta: float) -> void:
 		
 func process_attacking() -> void:
 	if(!animationPlayer.is_playing()):
+		if(directionToPlayer.length() > attack_range):
+			transitionToState(ENEMY_STATE.MOVING)
+		else:
 			animationPlayer.play("enemy_attack")
-	if(directionToPlayer.length() > attack_range):
-		transitionToState(ENEMY_STATE.MOVING)
 		
 func process_getting_hit(delta: float) -> void:
 	hit_stun_timer += delta
@@ -124,3 +125,7 @@ func take_damage(damage: int, damage_direction: Vector2) -> void:
 	else:
 		transitionToState(ENEMY_STATE.DYING)
 	EventBus.damage_taken.emit(damage, global_position)
+	
+func deal_damage():
+	if(directionToPlayer.length() < attack_range):
+		player.take_damage()

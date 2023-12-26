@@ -88,4 +88,3 @@ func add_enemy(enemy: Enemy) -> void:
 	var position = world_bounds_min + random_on_edge if randi() % 2 == 0 else world_bounds_max - random_on_edge
 	enemy.global_position = position
 	enemy.transitionToState(Enemy.ENEMY_STATE.MOVING)
-	print(position)
