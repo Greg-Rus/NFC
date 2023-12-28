@@ -12,6 +12,7 @@ enum ENEMY_STATE {IDLE, MOVING, ATTACKING, GETTING_HIT, DYING, DEAD}
 @export var detection_range : float = 100
 @export var attack_range : float = 30
 @export var hit_points : float = 5
+@export var experience_drop : int = 1
 @export var hit_stun_time : float = 0.6
 @export var player : Node2D
 @export var draw_debug :bool
@@ -81,8 +82,9 @@ func transitionToState(state: ENEMY_STATE) -> void:
 			animationPlayer.play("enemy_die")
 			collisionShape.set_deferred("disabled", true)
 			sprite.modulate = deadColor
+			z_index = Constants.DEAD_Z_INDEX
 		ENEMY_STATE.DEAD:
-			GameManager.enemy_count -= 1
+			GameManager.report_enemy_death(experience_drop, global_position)
 			queue_free()
 	
 func process_idle() -> void:

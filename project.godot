@@ -69,6 +69,14 @@ attack={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Actors"
+2d_physics/layer_2="Weapons"
+2d_physics/layer_3="Walls"
+2d_physics/layer_4="Enemies"
+2d_physics/layer_5="Pickups"
+
 [physics]
 
 2d/default_gravity_vector=Vector2(0, 0)

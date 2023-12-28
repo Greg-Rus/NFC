@@ -4,6 +4,7 @@ extends Node
 #@onready var environment_scene = preload("res://Scenes/Levels/test_environment.tscn")
 @onready var environment_scene = preload("res://Scenes/Levels/test_open_survival_map.tscn")
 @onready var player_scene = preload("res://Scenes/Player/player_iris.tscn")
+@onready var experience_pickup = preload("res://Scenes/Pickups/experience_pickup.tscn")
 @onready var screensize : Vector2 = get_viewport().get_visible_rect().size
 @export var enemy_count : int
 
@@ -38,3 +39,10 @@ func spawn_enemy() -> void:
 	new_enemy.init(player)
 	current_environment.add_enemy(new_enemy)
 	enemy_count += 1
+	
+func report_enemy_death(enemy_xp : int, enemy_global_position : Vector2):
+	enemy_count -= 1
+	var exp_drop : ExperiencePickup = experience_pickup.instantiate()
+	exp_drop.experience = enemy_xp
+	exp_drop.global_position = enemy_global_position
+	current_environment.add_child(exp_drop)

@@ -4,6 +4,7 @@ extends CharacterBody2D
 @export var speed : float = 100
 @export var hit_points_max : int = 5
 @export var hit_points_current : int
+@export var experience_points : int = 0
 
 @onready var animationTree : AnimationTree = $AnimationTree
 @onready var sprite : Sprite2D = $Sprite2D
@@ -15,6 +16,7 @@ var hit_tween : Tween
 func _ready():
 	hit_points_current = hit_points_max
 	EventBus.player_health_changed.emit()
+	EventBus.player_xp_changed.emit()
 	invincibility_timer = Timer.new()
 	invincibility_timer.one_shot = true
 	add_child(invincibility_timer)	
@@ -68,3 +70,7 @@ func flash_red():
 		hit_tween.tween_callback(sprite.set_modulate.bind(Color.WHITE)).set_delay(0.1)
 		hit_tween.tween_callback(sprite.set_modulate.bind(Color.RED)).set_delay(0.1)
 		hit_tween.tween_callback(sprite.set_modulate.bind(Color.WHITE)).set_delay(0.1)
+		
+func pickup_XP(experience : int) -> void:
+	experience_points += experience
+	EventBus.player_xp_changed.emit()
