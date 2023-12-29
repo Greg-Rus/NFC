@@ -6,12 +6,14 @@ enum ENEMY_STATE {IDLE, MOVING, ATTACKING, GETTING_HIT, DYING, DEAD}
 @onready var animationPlayer : AnimationPlayer = $AnimationPlayer
 @onready var sprite : Sprite2D = $Sprite2D
 @onready var collisionShape : CollisionShape2D = $CollisionShape2D
+@onready var health_bar : TextureProgressBar = $TextureProgressBar
 @export var deadColor : Color
 @export var moveSpeed : float
 @export var acceleration: float
 @export var detection_range : float = 100
 @export var attack_range : float = 30
-@export var hit_points : float = 5
+@export var hit_points : int = 5
+@export var current_hit_points : int
 @export var experience_drop : int = 1
 @export var hit_stun_time : float = 0.6
 @export var player : Node2D
@@ -30,6 +32,7 @@ func _draw() -> void:
 
 func _ready() -> void:
 	animationPlayer.play("enemy_idle")
+	current_hit_points = hit_points
 
 func _process(delta: float) -> void:
 	updateDirectionToPlayer()
@@ -120,12 +123,16 @@ func try_flip_body() -> void:
 	sprite.flip_h = isFlipped
 
 func take_damage(damage: int, damage_direction: Vector2) -> void:
-	hit_points = max(0, hit_points - damage)
+	current_hit_points = max(0, current_hit_points - damage)
 	velocity = damage_direction
-	if(hit_points > 0):
+	if(current_hit_points > 0):
 		transitionToState(ENEMY_STATE.GETTING_HIT)
+		health_bar.visible = true
+		health_bar.value = float(current_hit_points) / hit_points * 100
 	else:
+		health_bar.visible = false
 		transitionToState(ENEMY_STATE.DYING)
+		
 	EventBus.damage_taken.emit(damage, global_position)
 	
 func deal_damage():

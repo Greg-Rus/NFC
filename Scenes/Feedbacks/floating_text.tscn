@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://Scenes/Feedbacks/floating_text.gd" id="1_c575n"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_b45qa"]
+font_size = 8
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
 
@@ -86,10 +87,10 @@ scale = Vector2(0.3, 0.3)
 script = ExtResource("1_c575n")
 
 [node name="Label" type="Label" parent="."]
-offset_left = -19.0
-offset_top = -11.0
-offset_right = 19.0
-offset_bottom = 10.0
+offset_left = -20.0
+offset_top = -7.0
+offset_right = 20.0
+offset_bottom = 7.0
 text = "99"
 label_settings = SubResource("LabelSettings_b45qa")
 horizontal_alignment = 1

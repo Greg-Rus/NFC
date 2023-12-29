@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://d3phxbxsff8gc"]
+[gd_scene load_steps=12 format=3 uid="uid://d3phxbxsff8gc"]
 
 [ext_resource type="Script" path="res://Scenes/Enemies/enemy.gd" id="1_gqnbu"]
 [ext_resource type="Texture2D" uid="uid://cut20pimm2fy4" path="res://Assets/Sprites/Enemies/Enemy_006_D.png" id="1_ijbqa"]
+[ext_resource type="Texture2D" uid="uid://b3df1ewyngt1w" path="res://Assets/Sprites/UI/Monster_Health_Bar.png" id="3_gq8lc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xbi40"]
 radius = 7.07107
@@ -137,7 +138,6 @@ deadColor = Color(0.478431, 0.478431, 0.478431, 1)
 moveSpeed = 25.0
 acceleration = 5.0
 attack_range = 20.0
-hit_points = 2.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -11)
@@ -153,3 +153,15 @@ shape = SubResource("CircleShape2D_xbi40")
 libraries = {
 "": SubResource("AnimationLibrary_auedx")
 }
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+visible = false
+offset_left = -8.0
+offset_top = 5.0
+offset_right = 8.0
+offset_bottom = 8.0
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("3_gq8lc")
+texture_progress = ExtResource("3_gq8lc")
+tint_under = Color(0.176471, 0.176471, 0.176471, 1)
