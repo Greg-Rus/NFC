@@ -9,9 +9,15 @@ extends CharacterBody2D
 @onready var animationTree : AnimationTree = $AnimationTree
 @onready var sprite : Sprite2D = $Sprite2D
 @onready var weaponSlot : Node2D = $WeaponSlotRoot
+@onready var axe_scene = preload("res://Scenes/Weapons/axe.tscn")
 var isFlipped : bool = false
 var invincibility_timer : Timer
 var hit_tween : Tween
+var directionToPointer : Vector2
+var isWalking : bool
+var input : Vector2
+var is_ranged_attack_ongoing : bool
+var axe : Axe
 
 func _ready():
 	hit_points_current = hit_points_max
@@ -20,26 +26,29 @@ func _ready():
 	invincibility_timer = Timer.new()
 	invincibility_timer.one_shot = true
 	add_child(invincibility_timer)	
+	
+func _process(delta):
+	input = Input.get_vector("left", "right", "up", "down")
+	isWalking = input != Vector2.ZERO
+	animationTree["parameters/conditions/idle"] = !isWalking
+	if(Input.is_action_just_pressed("Throw")):
+		on_throw_action()
 
 func _physics_process(delta: float) -> void:
-	var input : Vector2 = Input.get_vector("left", "right", "up", "down")
-	velocity = input * speed * delta * Constants.DELTA_MULTIPLIER
-	var isWalking : bool = input != Vector2.ZERO
-	animationTree["parameters/conditions/idle"] = !isWalking
-
+	directionToPointer = get_global_mouse_position() - global_position
 	if(isWalking):
-		var directionToPointer = global_position - get_global_mouse_position()
+		velocity = input * speed * delta * Constants.DELTA_MULTIPLIER
 		var nextPostionToPointer = global_position + velocity - get_global_mouse_position()
 		var walkingForward = nextPostionToPointer.length_squared() < directionToPointer.length_squared()
 		animationTree["parameters/conditions/walking"] = walkingForward
 		animationTree["parameters/conditions/backing"] = !walkingForward
+		move_and_slide()
 	else:
 		animationTree["parameters/conditions/walking"] = false
 		animationTree["parameters/conditions/backing"] = false
 	
 	try_flip_body()
 	aim_weapon()
-	move_and_slide()
 	
 func try_flip_body() -> void:
 	isFlipped = get_global_mouse_position().x < global_position.x
@@ -74,3 +83,20 @@ func flash_red():
 func pickup_XP(experience : int) -> void:
 	experience_points += experience
 	EventBus.player_xp_changed.emit()
+	
+func on_throw_action():
+	if(axe == null):
+		axe = axe_scene.instantiate() as Axe
+		get_parent().add_child(axe)
+		axe.global_position = global_position
+		axe.throw(directionToPointer.normalized(), self)
+		is_ranged_attack_ongoing = true
+	elif(axe.is_recalled): #ignore input if the axe is on it's way
+		return
+	else:
+		axe.recall()
+		
+func on_axe_returned():
+	axe.queue_free()
+	axe = null
+	pass
