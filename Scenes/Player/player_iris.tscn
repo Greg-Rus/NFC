@@ -1,9 +1,10 @@
-[gd_scene load_steps=24 format=3 uid="uid://b385dsdhhtn6h"]
+[gd_scene load_steps=25 format=3 uid="uid://b385dsdhhtn6h"]
 
 [ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_ahcg7"]
 [ext_resource type="Texture2D" uid="uid://286olsfwgydw" path="res://Assets/Sprites/Iris/Iris_Main.png" id="2_27228"]
 [ext_resource type="Script" path="res://Scenes/Player/WeaponSlot.gd" id="3_3fei1"]
 [ext_resource type="PackedScene" uid="uid://1gdvtd6tre6m" path="res://Scenes/Weapons/sword.tscn" id="4_gasyu"]
+[ext_resource type="Script" path="res://Scenes/Player/PlayerModel.gd" id="5_h8o3l"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pnlfx"]
 radius = 3.5
@@ -270,7 +271,12 @@ z_index = 10
 collision_mask = 12
 motion_mode = 1
 script = ExtResource("1_ahcg7")
-speed = 50.0
+
+[node name="Model" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_h8o3l")
+_max_HP = 6
+walk_speed = 50.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_27228")

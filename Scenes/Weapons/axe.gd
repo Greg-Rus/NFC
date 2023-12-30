@@ -46,4 +46,3 @@ func move():
 func _on_body_entered(body):
 	var enemy = body as Enemy
 	enemy.take_damage(2, velocity.normalized())
-	pass # Replace with function body.

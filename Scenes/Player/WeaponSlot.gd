@@ -1,4 +1,5 @@
 extends Node2D
+class_name WeaponSlot
 
 @onready var animationPlayer : AnimationPlayer = $WeaponSlot/AnimationPlayer
 @onready var weaponSlot : Node2D = $WeaponSlot
