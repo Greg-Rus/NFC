@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://86rrt3duwba"]
+
+[ext_resource type="PackedScene" uid="uid://cocnb6yux3ltk" path="res://Scenes/Pickups/base_pickup.tscn" id="1_syjeq"]
+[ext_resource type="Script" path="res://Scenes/Pickups/health_pickup.gd" id="2_nvn5u"]
+
+[node name="HealthPickup" instance=ExtResource("1_syjeq")]
+script = ExtResource("2_nvn5u")
+
+[node name="Sprite2D" parent="." index="1"]
+region_rect = Rect2(0, 704, 16, 16)

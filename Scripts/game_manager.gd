@@ -1,10 +1,10 @@
 extends Node
 
 @onready var enemy_scene = preload("res://Scenes/Enemies/enemy.tscn")
-#@onready var environment_scene = preload("res://Scenes/Levels/test_environment.tscn")
 @onready var environment_scene = preload("res://Scenes/Levels/test_open_survival_map.tscn")
 @onready var player_scene = preload("res://Scenes/Player/player_iris.tscn")
-@onready var experience_pickup = preload("res://Scenes/Pickups/experience_pickup.tscn")
+@onready var experience_pickup = preload("res://Scenes/Pickups/XP_pickup.tscn")
+@onready var health_pickup = preload("res://Scenes/Pickups/health_pickup.tscn")
 @onready var screensize : Vector2 = get_viewport().get_visible_rect().size
 @export var enemy_count : int
 
@@ -41,8 +41,17 @@ func spawn_enemy() -> void:
 	enemy_count += 1
 	
 func report_enemy_death(enemy_xp : int, enemy_global_position : Vector2):
+	#spawn_xp_pickup(enemy_xp, enemy_global_position)
+	spawn_hp_pickup(enemy_global_position)
+	
+func spawn_xp_pickup(enemy_xp : int, enemy_global_position : Vector2):
 	enemy_count -= 1
-	var exp_drop : ExperiencePickup = experience_pickup.instantiate()
+	var exp_drop : XP_Pickup = experience_pickup.instantiate()
 	exp_drop.experience = enemy_xp
 	exp_drop.global_position = enemy_global_position
 	current_environment.add_child(exp_drop)
+	
+func spawn_hp_pickup(position : Vector2):
+	var hp_drop : HP_Pickup = health_pickup.instantiate()
+	hp_drop.global_position = position
+	current_environment.add_child(hp_drop)
