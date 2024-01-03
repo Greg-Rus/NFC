@@ -29,8 +29,12 @@ var current_XP : int:
 	get:
 		return _current_XP
 	set(val):
-		_current_XP = val
-		EventBus.XP_changed.emit(_current_XP)
+		if(val >= xp_to_level_up):
+			current_level += 1
+			_current_XP = 0
+		else :
+			_current_XP = val
+		EventBus.XP_changed.emit(_current_XP, xp_to_level_up)
 
 @export var _current_level : int
 var current_level : int:
@@ -39,8 +43,16 @@ var current_level : int:
 	set(val):
 		_current_level = val
 		EventBus.level_changed.emit(_current_level)
+		
+@export var _xp_to_level_up : int
+var xp_to_level_up : int:
+	get:
+		return _xp_to_level_up * _current_level
+	set(val):
+		_xp_to_level_up = val
+	
 
-#unused
+#Unused. Maybe this should be rage?
 @export var max_MP : int
 
 @export var current_MP : int

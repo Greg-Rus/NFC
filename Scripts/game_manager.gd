@@ -24,8 +24,8 @@ func load_environemnt() -> void:
 	player = player_scene.instantiate() as Player
 	current_environment.add_player(player)
 	enemy_spawn_timer.timeout.connect(on_enemy_spawn_timer)
-	#for i in 30:
-		#on_enemy_spawn_timer()
+	for i in 30:
+		on_enemy_spawn_timer()
 	enemy_spawn_timer.start(1)
 	
 func on_enemy_spawn_timer() -> void:

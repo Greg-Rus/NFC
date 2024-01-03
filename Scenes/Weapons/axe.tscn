@@ -18,7 +18,7 @@ rotation_speed = 30.0
 
 [node name="SwordModel" parent="." instance=ExtResource("2_56dhc")]
 hit_force = 0.0
-base_damage = 5
+base_damage = 2
 
 [node name="CritDamageBonus" parent="SwordModel" instance=ExtResource("3_cjtlg")]
 

@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cbtek65dqb47s"]
+[gd_scene load_steps=5 format=3 uid="uid://cbtek65dqb47s"]
 
 [ext_resource type="Script" path="res://Scenes/UI/UI_Canvas.gd" id="1_knj01"]
 [ext_resource type="PackedScene" uid="uid://jsg4cqjev2gv" path="res://Scenes/UI/ui_heart_full.tscn" id="1_noacm"]
+[ext_resource type="Texture2D" uid="uid://vs5175pyb1p4" path="res://Assets/Sprites/UI/Generic_Progress_Bar_3x3.png" id="3_pwdgj"]
+[ext_resource type="Texture2D" uid="uid://fe0c2w83wj1x" path="res://Assets/Sprites/UI/xp_proges_bar.png" id="4_wmm7o"]
 
 [node name="CanvasLayer" type="CanvasLayer"]
 script = ExtResource("1_knj01")
@@ -14,41 +16,57 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer"]
+[node name="hp_heart_container" type="HBoxContainer" parent="Control"]
+unique_name_in_owner = true
 layout_mode = 2
+offset_left = 16.0
+offset_top = 32.0
+offset_right = 80.0
+offset_bottom = 32.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_constants/separation = 16
 
-[node name="UI_Heart_Full" parent="Control/MarginContainer/HBoxContainer" instance=ExtResource("1_noacm")]
+[node name="UI_Heart_Full" parent="Control/hp_heart_container" instance=ExtResource("1_noacm")]
 layout_mode = 2
 
-[node name="UI_Heart_Full2" parent="Control/MarginContainer/HBoxContainer" instance=ExtResource("1_noacm")]
+[node name="UI_Heart_Full2" parent="Control/hp_heart_container" instance=ExtResource("1_noacm")]
 layout_mode = 2
 
-[node name="UI_Heart_Full3" parent="Control/MarginContainer/HBoxContainer" instance=ExtResource("1_noacm")]
+[node name="UI_Heart_Full3" parent="Control/hp_heart_container" instance=ExtResource("1_noacm")]
 layout_mode = 2
 
-[node name="UI_Heart_Full4" parent="Control/MarginContainer/HBoxContainer" instance=ExtResource("1_noacm")]
+[node name="UI_Heart_Full4" parent="Control/hp_heart_container" instance=ExtResource("1_noacm")]
 layout_mode = 2
 
-[node name="UI_Heart_Full5" parent="Control/MarginContainer/HBoxContainer" instance=ExtResource("1_noacm")]
+[node name="UI_Heart_Full5" parent="Control/hp_heart_container" instance=ExtResource("1_noacm")]
 layout_mode = 2
 
-[node name="Score" type="Label" parent="Control/MarginContainer"]
-layout_mode = 2
+[node name="level" type="Label" parent="Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -26.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 39.0
+grow_horizontal = 0
 size_flags_horizontal = 8
 size_flags_vertical = 0
 text = "0"
+
+[node name="xp_progress_bar" type="TextureProgressBar" parent="Control"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+max_value = 1.0
+step = 0.01
+nine_patch_stretch = true
+texture_under = ExtResource("3_pwdgj")
+texture_progress = ExtResource("4_wmm7o")

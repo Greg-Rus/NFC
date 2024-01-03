@@ -12,19 +12,19 @@ var is_recalled : bool
 var is_thrown : bool
 var velocity : Vector2
 
-func _physics_process(delta):
+func _physics_process(delta : float):
 	if(!is_thrown):
 		return
 	
 	update_velocity(delta)
 	move()
 	
-func _process(delta):
+func _process(delta : float):
 	sprite.rotate(rotation_speed * delta)
 
-func throw(direction : Vector2, player : Player) -> void:
+func throw(direction : Vector2, throwing_player : Player) -> void:
 	throw_direction = direction
-	self.player = player
+	player = throwing_player
 	is_thrown = true
 	
 func recall():
