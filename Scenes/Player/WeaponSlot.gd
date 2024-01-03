@@ -3,7 +3,6 @@ class_name WeaponSlot
 
 @onready var animationPlayer : AnimationPlayer = $WeaponSlot/AnimationPlayer
 @onready var weaponSlot : Node2D = $WeaponSlot
-signal attack_action(is_attacking : bool)
 
 var isForwardAttack : bool = true
 var isAttacking : bool
@@ -32,4 +31,4 @@ func on_attack_animation_done():
 	
 func set_is_attacking(is_attacking: bool):
 	isAttacking = is_attacking
-	attack_action.emit(is_attacking)
+	EventBus.attack_action.emit(is_attacking)

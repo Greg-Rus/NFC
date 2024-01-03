@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2pfstsp18uv7"]
+
+[ext_resource type="Script" path="res://Scripts/MeleeWeaponModel.gd" id="1_2hbjb"]
+[ext_resource type="PackedScene" uid="uid://omyrx6xcxve0" path="res://Scenes/Weapons/cleave_damage_bonus.tscn" id="3_v4vsq"]
+
+[node name="SwordModel" type="Node"]
+script = ExtResource("1_2hbjb")
+
+[node name="CleaveDamageBonus" parent="." instance=ExtResource("3_v4vsq")]

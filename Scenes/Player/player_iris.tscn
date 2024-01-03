@@ -321,5 +321,3 @@ libraries = {
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position_smoothing_enabled = true
-
-[connection signal="attack_action" from="WeaponSlotRoot" to="WeaponSlotRoot/WeaponSlot/Sword" method="_on_weapon_slot_root_attack_action"]

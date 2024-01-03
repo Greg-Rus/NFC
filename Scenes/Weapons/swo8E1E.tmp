@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://1gdvtd6tre6m"]
+[gd_scene load_steps=6 format=3 uid="uid://1gdvtd6tre6m"]
 
 [ext_resource type="Script" path="res://Scenes/Weapons/melee_weapon.gd" id="1_0sj3y"]
 [ext_resource type="Texture2D" uid="uid://dpi8x42pe605y" path="res://Assets/Sprites/Items/Sword.png" id="1_tlbbo"]
-[ext_resource type="PackedScene" uid="uid://c2pfstsp18uv7" path="res://Scenes/Weapons/sword_model.tscn" id="2_a6hv3"]
+[ext_resource type="Script" path="res://Scenes/Weapons/MeleeWeaponModel.gd" id="2_ub1ec"]
+[ext_resource type="Script" path="res://Scenes/Weapons/MultDamageBonusBase.gd" id="3_q05xd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_monuu"]
 size = Vector2(4, 15)
@@ -10,7 +11,11 @@ size = Vector2(4, 15)
 [node name="Sword" type="Node2D"]
 script = ExtResource("1_0sj3y")
 
-[node name="SwordModel" parent="." instance=ExtResource("2_a6hv3")]
+[node name="Model" type="Node" parent="."]
+script = ExtResource("2_ub1ec")
+
+[node name="MultDamageBonusBase" type="Node" parent="Model"]
+script = ExtResource("3_q05xd")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(8, 0)

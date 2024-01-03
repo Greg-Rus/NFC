@@ -2,3 +2,4 @@ extends Node
 
 var DELTA_MULTIPLIER : float = 100
 var DEAD_Z_INDEX : int = 2
+enum DAMAGE_TABLE {DAMAGE, IS_CRIT, TOTAL_MULTIPLIER}
