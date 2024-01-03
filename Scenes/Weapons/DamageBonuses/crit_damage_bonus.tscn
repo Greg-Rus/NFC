@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://drygobspv6spc"]
+
+[ext_resource type="Script" path="res://Scenes/Weapons/DamageBonuses/CritDamageBonus.gd" id="1_0xp44"]
+
+[node name="CritDamageBonus" type="Node"]
+script = ExtResource("1_0xp44")

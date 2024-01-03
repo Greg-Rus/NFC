@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bhrnu2tmu4wyp"]
+[gd_scene load_steps=6 format=3 uid="uid://bhrnu2tmu4wyp"]
 
 [ext_resource type="Script" path="res://Scenes/Weapons/axe.gd" id="1_yrjq1"]
+[ext_resource type="PackedScene" uid="uid://c2pfstsp18uv7" path="res://Scenes/Weapons/sword_model.tscn" id="2_56dhc"]
 [ext_resource type="Texture2D" uid="uid://8wvhdiu1y6iv" path="res://Assets/Sprites/Items/RA_Item_Icons01.png" id="2_gnn14"]
+[ext_resource type="PackedScene" uid="uid://drygobspv6spc" path="res://Scenes/Weapons/DamageBonuses/crit_damage_bonus.tscn" id="3_cjtlg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_77s5e"]
 radius = 8.0
@@ -13,6 +15,12 @@ collision_mask = 8
 script = ExtResource("1_yrjq1")
 speed = 300.0
 rotation_speed = 30.0
+
+[node name="SwordModel" parent="." instance=ExtResource("2_56dhc")]
+hit_force = 0.0
+base_damage = 5
+
+[node name="CritDamageBonus" parent="SwordModel" instance=ExtResource("3_cjtlg")]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_gnn14")

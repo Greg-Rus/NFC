@@ -2,6 +2,7 @@ extends Area2D
 class_name Axe
 
 @onready var sprite : Sprite2D = $Sprite2D
+@onready var model : MaleeWeaponModel = $SwordModel
 @export var speed : float
 @export var rotation_speed : float
 
@@ -45,4 +46,5 @@ func move():
 
 func _on_body_entered(body):
 	var enemy = body as Enemy
-	enemy.take_damage(2, velocity.normalized())
+	enemy.take_damage(model.get_updated_damage_table(), velocity.normalized())
+	EventBus.enemy_hit_ranged.emit()

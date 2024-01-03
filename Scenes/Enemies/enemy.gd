@@ -122,8 +122,8 @@ func try_flip_body() -> void:
 	isFlipped = directionToPlayer.x < 0
 	sprite.flip_h = isFlipped
 
-func take_damage(damage: int, damage_direction: Vector2) -> void:
-	current_hit_points = max(0, current_hit_points - damage)
+func take_damage(damage_table, damage_direction: Vector2) -> void:
+	current_hit_points = max(0, current_hit_points - damage_table[Constants.DAMAGE_TABLE.DAMAGE])
 	velocity = damage_direction
 	if(current_hit_points > 0):
 		transitionToState(ENEMY_STATE.GETTING_HIT)
@@ -133,7 +133,7 @@ func take_damage(damage: int, damage_direction: Vector2) -> void:
 		health_bar.visible = false
 		transitionToState(ENEMY_STATE.DYING)
 		
-	EventBus.damage_taken.emit(damage, global_position)
+	EventBus.damage_taken.emit(damage_table, global_position)
 	
 func deal_damage():
 	if(directionToPlayer.length() < attack_range):

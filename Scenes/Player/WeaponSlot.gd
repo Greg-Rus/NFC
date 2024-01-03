@@ -31,4 +31,4 @@ func on_attack_animation_done():
 	
 func set_is_attacking(is_attacking: bool):
 	isAttacking = is_attacking
-	EventBus.attack_action.emit(is_attacking)
+	EventBus.melee_attack.emit(is_attacking)

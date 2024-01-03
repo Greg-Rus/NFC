@@ -41,11 +41,13 @@ func spawn_enemy() -> void:
 	enemy_count += 1
 	
 func report_enemy_death(enemy_xp : int, enemy_global_position : Vector2):
-	#spawn_xp_pickup(enemy_xp, enemy_global_position)
-	spawn_hp_pickup(enemy_global_position)
+	enemy_count -= 1
+	if(randf() <= 0.01):
+		spawn_hp_pickup(enemy_global_position)
+	else:
+		spawn_xp_pickup(enemy_xp, enemy_global_position)
 	
 func spawn_xp_pickup(enemy_xp : int, enemy_global_position : Vector2):
-	enemy_count -= 1
 	var exp_drop : XP_Pickup = experience_pickup.instantiate()
 	exp_drop.experience = enemy_xp
 	exp_drop.global_position = enemy_global_position

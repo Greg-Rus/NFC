@@ -14,7 +14,6 @@ var hit_tween : Tween
 var directionToPointer : Vector2
 var isWalking : bool
 var input : Vector2
-var is_ranged_attack_ongoing : bool
 var axe : Axe
 
 func _ready():
@@ -84,7 +83,7 @@ func on_throw_action():
 		get_parent().add_child(axe)
 		axe.global_position = global_position
 		axe.throw(directionToPointer.normalized(), self)
-		is_ranged_attack_ongoing = true
+		EventBus.ranged_attack.emit(true)
 	elif(axe.is_recalled): #ignore input if the axe is on it's way
 		return
 	else:
@@ -93,4 +92,4 @@ func on_throw_action():
 func on_axe_returned():
 	axe.queue_free()
 	axe = null
-	pass
+	EventBus.ranged_attack.emit(false)
