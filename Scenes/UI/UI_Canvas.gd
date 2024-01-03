@@ -4,6 +4,7 @@ class_name UI_Canvas
 @onready var hearts_layout : HBoxContainer = %hp_heart_container
 @onready var score_label : Label = %level
 @onready var xp_progress_bar : TextureProgressBar = %xp_progress_bar
+@onready var stamina_bar : TextureProgressBar = %stamina_bar
 @onready var full_heart_icon = preload("res://Scenes/UI/ui_heart_full.tscn")
 @onready var empty_heart_icon = preload("res://Scenes/UI/ui_heart_empty.tscn")
 
@@ -11,6 +12,7 @@ func _ready() -> void:
 	EventBus.player_HP_changed.connect(on_player_heath_change)
 	EventBus.XP_changed.connect(on_player_xp_changed)
 	EventBus.level_changed.connect(on_level_change)
+	EventBus.stamina_changed.connect(on_stamina_changed)
 	
 func on_player_heath_change(current_HP : int, max_HP : int):
 	hearts_layout.get_children().map(func(child): child.queue_free())
@@ -29,3 +31,6 @@ func on_player_xp_changed(xp : int, max_xp: int):
 	
 func on_level_change(level : int):
 	score_label.text = str(level)
+	
+func on_stamina_changed(current: float, max : float):
+	stamina_bar.value = current / max

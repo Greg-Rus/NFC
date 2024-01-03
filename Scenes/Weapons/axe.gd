@@ -26,8 +26,10 @@ func throw(direction : Vector2, throwing_player : Player) -> void:
 	throw_direction = direction
 	player = throwing_player
 	is_thrown = true
+	EventBus.stamina_drain.emit(model.stamina_cost)
 	
 func recall():
+	EventBus.stamina_drain.emit(model.stamina_cost)
 	is_recalled = true
 	
 func update_velocity(delta : float):
@@ -42,7 +44,6 @@ func update_velocity(delta : float):
 		
 func move():
 	global_position = global_position + velocity
-
 
 func _on_body_entered(body):
 	var enemy = body as Enemy

@@ -18,7 +18,6 @@ var axe : Axe
 
 func _ready():
 	model = %Model
-	model.current_HP = model.max_HP
 	invincibility_timer = Timer.new()
 	invincibility_timer.one_shot = true
 	add_child(invincibility_timer)	

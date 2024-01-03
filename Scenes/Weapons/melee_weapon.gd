@@ -15,4 +15,6 @@ func _on_area_2d_body_entered(body):
 		EventBus.enemy_hit_melee.emit()
 
 func on_melee_attack(is_attacking):
+	if(isAttacking):
+		EventBus.stamina_drain.emit(model.stamina_cost)
 	isAttacking = is_attacking

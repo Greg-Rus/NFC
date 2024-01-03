@@ -278,6 +278,9 @@ script = ExtResource("5_h8o3l")
 _max_HP = 6
 walk_speed = 50.0
 _xp_to_level_up = 10
+_current_stamina = 100.0
+_stamina_regen_per_second = 20.0
+_max_stamina = 100.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_27228")

@@ -10,7 +10,7 @@ var max_HP : int:
 		if(max_HP_delta > 0):
 			current_HP += max_HP_delta
 		_max_HP = val
-		EventBus.max_HP_changed.emit(_max_HP)
+		EventBus.player_HP_changed.emit(current_HP, _max_HP)
 
 @export var _current_HP : int
 var current_HP : int:
@@ -20,7 +20,7 @@ var current_HP : int:
 		if(val > max_HP): #we can't heatl past our max HP
 			val = max_HP
 		_current_HP = val
-		EventBus.player_HP_changed.emit(_current_HP, _max_HP)
+		EventBus.player_HP_changed.emit(_current_HP, max_HP)
 
 @export var walk_speed : float
 
@@ -51,8 +51,32 @@ var xp_to_level_up : int:
 	set(val):
 		_xp_to_level_up = val
 	
+@export var _current_stamina : float
+var current_stamina : float:
+	get:
+		return _current_stamina
+	set(val):
+		if(val < 0):
+			_current_stamina = 0
+		else:
+			_current_stamina = val
+		EventBus.stamina_changed.emit(_current_stamina, _max_stamina)
+		
+@export var _stamina_regen_per_second: float
 
-#Unused. Maybe this should be rage?
-@export var max_MP : int
+@export var _max_stamina : float
+var max_stamina : float:
+	get:
+		return _max_stamina
+	set(val):
+		_max_stamina = val
+		
+func _ready():
+	EventBus.stamina_drain.connect(func(drain:float): current_stamina -= drain)
+	current_HP = max_HP
+	current_stamina = max_stamina
 
-@export var current_MP : int
+func _process(delta):
+	if(current_stamina < max_stamina):
+		current_stamina += _stamina_regen_per_second * delta
+		
