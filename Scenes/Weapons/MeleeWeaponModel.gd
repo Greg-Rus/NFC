@@ -16,6 +16,8 @@ var damage_table = {
 
 func _ready():
 	bonusses = get_children().filter(func (x) : return x is MultiplicativeDamageBonusBase)
+	for b : MultiplicativeDamageBonusBase in bonusses:
+		b.init(self)
 	
 func get_updated_damage_table():
 	reset_damage_table()
