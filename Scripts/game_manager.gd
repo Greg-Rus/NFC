@@ -42,10 +42,7 @@ func spawn_enemy() -> void:
 	
 func report_enemy_death(enemy_xp : int, enemy_global_position : Vector2):
 	enemy_count -= 1
-	if(randf() <= 0.01):
-		spawn_hp_pickup(enemy_global_position)
-	else:
-		spawn_xp_pickup(enemy_xp, enemy_global_position)
+	spawn_pickup(enemy_xp, enemy_global_position)
 	
 func spawn_xp_pickup(enemy_xp : int, enemy_global_position : Vector2):
 	var exp_drop : XP_Pickup = experience_pickup.instantiate()
@@ -57,3 +54,10 @@ func spawn_hp_pickup(position : Vector2):
 	var hp_drop : HP_Pickup = health_pickup.instantiate()
 	hp_drop.global_position = position
 	current_environment.add_child(hp_drop)
+	
+func spawn_pickup(enemy_xp : int, enemy_global_position : Vector2):
+	var missing_hp = player.model.max_HP - player.model.current_HP
+	if(randf() <= 0.01 * missing_hp):
+		spawn_hp_pickup(enemy_global_position)
+	else:
+		spawn_xp_pickup(enemy_xp, enemy_global_position)
