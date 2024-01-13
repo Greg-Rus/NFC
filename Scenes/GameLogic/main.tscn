@@ -7,8 +7,13 @@
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ui1g6")
 
+[node name="MainCamera" type="Camera2D" parent="."]
+unique_name_in_owner = true
+position_smoothing_enabled = true
+
 [node name="Services" type="Node2D" parent="."]
 
 [node name="FloatingTextService" parent="Services" instance=ExtResource("1_gjwiv")]
 
-[node name="CanvasLayer" parent="Services" instance=ExtResource("3_kvgaq")]
+[node name="CanvasLayer" parent="Services" node_paths=PackedStringArray("camera") instance=ExtResource("3_kvgaq")]
+camera = NodePath("../../MainCamera")

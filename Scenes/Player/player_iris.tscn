@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://b385dsdhhtn6h"]
+[gd_scene load_steps=26 format=3 uid="uid://b385dsdhhtn6h"]
 
 [ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_ahcg7"]
 [ext_resource type="Texture2D" uid="uid://286olsfwgydw" path="res://Assets/Sprites/Iris/Iris_Main.png" id="2_27228"]
@@ -122,7 +122,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [-0.785398]
+"values": [-2.35619]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -151,7 +151,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_l3l42"]
 resource_name = "SwordOberhau"
-length = 0.2
+length = 0.5
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -160,10 +160,10 @@ tracks/0/path = NodePath(".:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.25, 0.5),
+"transitions": PackedFloat32Array(4.92458, 0.217638, 1.62451),
 "update": 0,
-"values": [-2.35619, 2.35619]
+"values": [-2.35619, 0.0, 2.35619]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -172,7 +172,7 @@ tracks/1/path = NodePath(".:z_index")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.25, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [-1, 1, 1]
@@ -184,9 +184,12 @@ tracks/2/path = NodePath("..")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1),
 "values": [{
+"args": [],
+"method": &"attack_apex_reached"
+}, {
 "args": [],
 "method": &"on_attack_animation_done"
 }]
@@ -198,15 +201,26 @@ tracks/3/path = NodePath(".:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.25, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2(0, 1), Vector2(5, 1), Vector2(0, 3)]
 }
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sword")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"values": []
+}
 
 [sub_resource type="Animation" id="Animation_3vo41"]
 resource_name = "SwordUnterhau"
-length = 0.2
+length = 0.5
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -215,10 +229,10 @@ tracks/0/path = NodePath(".:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.25, 0.5),
+"transitions": PackedFloat32Array(4.92458, 0.217638, 1.62451),
 "update": 0,
-"values": [2.35619, -2.35619]
+"values": [2.35619, -1.0098, -2.35619]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -227,7 +241,7 @@ tracks/1/path = NodePath(".:z_index")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.25, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [1, -1, -1]
@@ -239,9 +253,12 @@ tracks/2/path = NodePath("..")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1),
 "values": [{
+"args": [],
+"method": &"attack_apex_reached"
+}, {
 "args": [],
 "method": &"on_attack_animation_done"
 }]
@@ -253,7 +270,7 @@ tracks/3/path = NodePath(".:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
+"times": PackedFloat32Array(0, 0.25, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2(0, 3), Vector2(5, 1), Vector2(0, 1)]
@@ -265,6 +282,9 @@ _data = {
 "SwordOberhau": SubResource("Animation_l3l42"),
 "SwordUnterhau": SubResource("Animation_3vo41")
 }
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_y0m4x"]
+radius = 23.0217
 
 [node name="PlayerIris" type="CharacterBody2D"]
 z_index = 10
@@ -313,7 +333,7 @@ script = ExtResource("3_3fei1")
 [node name="WeaponSlot" type="Node2D" parent="WeaponSlotRoot"]
 z_index = 1
 position = Vector2(0, 1)
-rotation = -0.785398
+rotation = -2.35619
 
 [node name="Sword" parent="WeaponSlotRoot/WeaponSlot" instance=ExtResource("4_gasyu")]
 
@@ -323,5 +343,19 @@ libraries = {
 "": SubResource("AnimationLibrary_2n0nc")
 }
 
+[node name="AttackZone" type="Area2D" parent="WeaponSlotRoot"]
+position = Vector2(0, 1)
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponSlotRoot/AttackZone"]
+shape = SubResource("CircleShape2D_y0m4x")
+
 [node name="Camera2D" type="Camera2D" parent="."]
+visible = false
 position_smoothing_enabled = true
+
+[node name="CameraRemote" type="RemoteTransform2D" parent="."]
+unique_name_in_owner = true
+
+[connection signal="area_entered" from="WeaponSlotRoot/AttackZone" to="WeaponSlotRoot" method="_on_attack_zone_area_entered"]

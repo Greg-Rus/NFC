@@ -22,6 +22,7 @@ func _physics_process(delta : float):
 	move()
 	
 func _process(delta : float):
+	EventBus.axe_position.emit(global_position)
 	if(grounded):
 		return
 	sprite.rotate(rotation_speed * delta)

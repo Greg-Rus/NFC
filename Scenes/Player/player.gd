@@ -5,6 +5,7 @@ extends CharacterBody2D
 @onready var sprite : Sprite2D = $Sprite2D
 @onready var weaponSlot : WeaponSlot = $WeaponSlotRoot
 @onready var axe_scene = preload("res://Scenes/Weapons/axe.tscn")
+@onready var camera_remote : RemoteTransform2D = %CameraRemote
 
 var model : PlayerModel
 
@@ -21,6 +22,7 @@ func _ready():
 	invincibility_timer = Timer.new()
 	invincibility_timer.one_shot = true
 	add_child(invincibility_timer)	
+	camera_remote.remote_path = GameManager.main_camera.get_path()
 	
 func _process(_delta):
 	input = Input.get_vector("left", "right", "up", "down")

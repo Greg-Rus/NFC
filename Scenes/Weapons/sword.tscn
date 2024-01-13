@@ -41,5 +41,6 @@ collision_mask = 8
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Area2D"]
 position = Vector2(0, -11)
 shape = SubResource("RectangleShape2D_monuu")
+disabled = true
 
 [connection signal="body_entered" from="Sprite2D/Area2D" to="." method="_on_area_2d_body_entered"]

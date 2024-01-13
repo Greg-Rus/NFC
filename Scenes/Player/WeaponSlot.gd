@@ -3,11 +3,13 @@ class_name WeaponSlot
 
 @onready var animationPlayer : AnimationPlayer = $WeaponSlot/AnimationPlayer
 @onready var weaponSlot : Node2D = $WeaponSlot
+@onready var attack_zone : Area2D = $AttackZone
+@onready var weapon : Weapon = $WeaponSlot/Sword
 
 var isForwardAttack : bool = true
 var isAttacking : bool
 
-func _process(delta):
+func _process(_delta):
 	if(Input.is_action_just_pressed("attack")):
 		if(!animationPlayer.is_playing()):
 			if(isForwardAttack):
@@ -32,3 +34,8 @@ func on_attack_animation_done():
 func set_is_attacking(is_attacking: bool):
 	isAttacking = is_attacking
 	EventBus.melee_attack.emit(is_attacking)
+
+func attack_apex_reached():
+	var bodies = attack_zone.get_overlapping_bodies()
+	for enemy : Enemy in bodies:
+		weapon.deal_damage_to_enemy(enemy)

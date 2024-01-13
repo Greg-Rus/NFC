@@ -12,6 +12,7 @@ var enemy_spawn_timer: Timer
 var current_environment : Environemnt
 var player : Player
 var main_node : Node2D
+var main_camera : Camera2D
 	
 func init(main : Node2D) -> void:
 	main_node = main
