@@ -13,16 +13,21 @@ var model : PlayerModel
 var isFlipped : bool = false
 var invincibility_timer : Timer
 var hit_tween : Tween
-var directionToPointer : Vector2
 var isWalking : bool
 var input : Vector2
+var look_direction : Vector2
 var axe : Axe
+var read_mouse : bool = true
+var read_controller: bool = false
+var last_mouse_input : Vector2
+var viewport : Viewport
 
 func _ready():
 	model = %Model
 	invincibility_timer = Timer.new()
 	invincibility_timer.one_shot = true
 	add_child(invincibility_timer)	
+	viewport = GameManager.main_camera.get_viewport()
 	camera_remote.remote_path = GameManager.main_camera.get_path()
 	attack_zone_indicator.init(weaponSlot.position, weaponSlot.weapon.model.range, weaponSlot.weapon.model.weapon_arc_degrees)
 	
@@ -34,11 +39,10 @@ func _process(_delta):
 		on_throw_action()
 
 func _physics_process(delta: float) -> void:
-	directionToPointer = get_global_mouse_position() - global_position
+	read_input()
 	if(isWalking):
 		velocity = input * model.walk_speed * delta * Constants.DELTA_MULTIPLIER
-		var nextPostionToPointer = global_position + velocity - get_global_mouse_position()
-		var walkingForward = nextPostionToPointer.length_squared() < directionToPointer.length_squared()
+		var walkingForward = (velocity.x > 0 && look_direction.x > 0) || (velocity.x < 0 && look_direction.x < 0)
 		animationTree["parameters/conditions/walking"] = walkingForward
 		animationTree["parameters/conditions/backing"] = !walkingForward
 		move_and_slide()
@@ -49,15 +53,28 @@ func _physics_process(delta: float) -> void:
 	try_flip_body()
 	aim_weapon()
 	
+func read_input():
+	if(read_mouse):
+		look_direction = get_global_mouse_position() - global_position
+		if(Input.get_vector("look_left", "look_right", "look_up", "look_down") != Vector2.ZERO):
+			read_mouse = false
+			read_controller = true
+	
+	if(read_controller):
+		var controller_look = Input.get_vector("look_left", "look_right", "look_up", "look_down")
+		if(controller_look != Vector2.ZERO):
+			look_direction = controller_look
+		if(last_mouse_input != viewport.get_mouse_position()):
+			read_mouse = true
+			read_controller = false
+	last_mouse_input = viewport.get_mouse_position()
+	
 func try_flip_body() -> void:
-	isFlipped = get_global_mouse_position().x < global_position.x
+	isFlipped = look_direction.x < 0
 	sprite.flip_h = isFlipped
 	
 func aim_weapon() -> void:
-	var pointerPosition = get_global_mouse_position()
-	var weaponSlotPosition = weaponSlot.global_position
-	var weapon_direction_to_pointer = pointerPosition - weaponSlotPosition
-	var rotationToPointer : float = weapon_direction_to_pointer.angle()
+	var rotationToPointer : float = look_direction.angle()
 	weaponSlot.set_weapon_rotation(rotationToPointer) 
 	attack_zone_indicator.rotation = rotationToPointer
 
@@ -86,7 +103,7 @@ func on_throw_action():
 		axe = axe_scene.instantiate() as Axe
 		get_parent().add_child(axe)
 		axe.global_position = global_position
-		axe.throw(directionToPointer.normalized(), self)
+		axe.throw(look_direction.normalized(), self)
 		EventBus.ranged_attack.emit(true)
 	elif(axe.is_recalled): #ignore input if the axe is on it's way
 		return
