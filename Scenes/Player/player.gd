@@ -6,6 +6,7 @@ extends CharacterBody2D
 @onready var weaponSlot : WeaponSlot = $WeaponSlotRoot
 @onready var axe_scene = preload("res://Scenes/Weapons/axe.tscn")
 @onready var camera_remote : RemoteTransform2D = %CameraRemote
+@onready var attack_zone_indicator : AttackZoneIndicator = $AttackZoneIndicator
 
 var model : PlayerModel
 
@@ -23,6 +24,7 @@ func _ready():
 	invincibility_timer.one_shot = true
 	add_child(invincibility_timer)	
 	camera_remote.remote_path = GameManager.main_camera.get_path()
+	attack_zone_indicator.init(weaponSlot.position, weaponSlot.weapon.model.range, weaponSlot.weapon.model.weapon_arc_degrees)
 	
 func _process(_delta):
 	input = Input.get_vector("left", "right", "up", "down")
@@ -57,6 +59,7 @@ func aim_weapon() -> void:
 	var weapon_direction_to_pointer = pointerPosition - weaponSlotPosition
 	var rotationToPointer : float = weapon_direction_to_pointer.angle()
 	weaponSlot.set_weapon_rotation(rotationToPointer) 
+	attack_zone_indicator.rotation = rotationToPointer
 
 func take_damage() -> void:
 	if(model.current_HP > 0 && invincibility_timer.is_stopped()):

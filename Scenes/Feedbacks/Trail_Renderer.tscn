@@ -10,7 +10,7 @@ point_count = 2
 offsets = PackedFloat32Array(0, 0.440217, 0.695652, 1)
 colors = PackedColorArray(0.768627, 0.768627, 0.768627, 0, 1, 1, 1, 0.392157, 1, 1, 1, 0.392157, 1, 1, 1, 0.498039)
 
-[node name="Line2D" type="Line2D"]
+[node name="TrailRenderer" type="Line2D"]
 z_index = 9
 width_curve = SubResource("Curve_25hn2")
 gradient = SubResource("Gradient_qrc0x")

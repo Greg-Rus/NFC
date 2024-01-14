@@ -15,6 +15,7 @@ size = Vector2(4, 15)
 script = ExtResource("1_0sj3y")
 
 [node name="SwordModel" parent="." instance=ExtResource("2_a6hv3")]
+range = 23.0
 
 [node name="CritDamageBonus" parent="SwordModel" instance=ExtResource("3_8cwei")]
 

@@ -1,10 +1,11 @@
-[gd_scene load_steps=26 format=3 uid="uid://b385dsdhhtn6h"]
+[gd_scene load_steps=28 format=3 uid="uid://b385dsdhhtn6h"]
 
 [ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_ahcg7"]
 [ext_resource type="Texture2D" uid="uid://286olsfwgydw" path="res://Assets/Sprites/Iris/Iris_Main.png" id="2_27228"]
 [ext_resource type="Script" path="res://Scenes/Player/WeaponSlot.gd" id="3_3fei1"]
 [ext_resource type="PackedScene" uid="uid://1gdvtd6tre6m" path="res://Scenes/Weapons/sword.tscn" id="4_gasyu"]
 [ext_resource type="Script" path="res://Scenes/Player/PlayerModel.gd" id="5_h8o3l"]
+[ext_resource type="PackedScene" uid="uid://c1vqou6hdlnab" path="res://Scenes/Feedbacks/attack_zone_indicator.tscn" id="6_ylqh4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pnlfx"]
 radius = 3.5
@@ -284,7 +285,10 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y0m4x"]
-radius = 23.0217
+radius = 23.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t7lbn"]
+size = Vector2(23, 2)
 
 [node name="PlayerIris" type="CharacterBody2D"]
 z_index = 10
@@ -343,15 +347,40 @@ libraries = {
 "": SubResource("AnimationLibrary_2n0nc")
 }
 
-[node name="AttackZone" type="Area2D" parent="WeaponSlotRoot"]
+[node name="AttackZoneArc" type="Area2D" parent="WeaponSlotRoot"]
+unique_name_in_owner = true
 position = Vector2(0, 1)
 collision_layer = 0
 collision_mask = 8
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponSlotRoot/AttackZone"]
+[node name="CollisionArc" type="CollisionShape2D" parent="WeaponSlotRoot/AttackZoneArc"]
 shape = SubResource("CircleShape2D_y0m4x")
+
+[node name="AttackZoneEdgeTop" type="Area2D" parent="WeaponSlotRoot"]
+unique_name_in_owner = true
+position = Vector2(0, 1)
+rotation = -0.785398
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionRect" type="CollisionShape2D" parent="WeaponSlotRoot/AttackZoneEdgeTop"]
+position = Vector2(11.5, 0)
+shape = SubResource("RectangleShape2D_t7lbn")
+
+[node name="AttackZoneEdgeBottom" type="Area2D" parent="WeaponSlotRoot"]
+unique_name_in_owner = true
+position = Vector2(0, 1)
+rotation = 0.785398
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionRect" type="CollisionShape2D" parent="WeaponSlotRoot/AttackZoneEdgeBottom"]
+position = Vector2(11.5, 0)
+shape = SubResource("RectangleShape2D_t7lbn")
 
 [node name="CameraRemote" type="RemoteTransform2D" parent="."]
 unique_name_in_owner = true
 
-[connection signal="area_entered" from="WeaponSlotRoot/AttackZone" to="WeaponSlotRoot" method="_on_attack_zone_area_entered"]
+[node name="AttackZoneIndicator" parent="." instance=ExtResource("6_ylqh4")]
+unique_name_in_owner = true
+position = Vector2(0, 1)
