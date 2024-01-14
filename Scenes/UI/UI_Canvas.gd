@@ -24,7 +24,7 @@ func _ready() -> void:
 	EventBus.axe_position.connect(on_axe_position_change)
 	viewport_center = camera.get_viewport_rect().size * 0.5
 	viewport_padded = camera.get_viewport_rect().size - Vector2(20,20)
-	axe_indicator.visible = true
+	axe_indicator.visible = false
 	
 func on_player_heath_change(current_HP : int, max_HP : int):
 	hearts_layout.get_children().map(func(child): child.queue_free())

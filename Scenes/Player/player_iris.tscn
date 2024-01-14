@@ -351,10 +351,6 @@ collision_mask = 8
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WeaponSlotRoot/AttackZone"]
 shape = SubResource("CircleShape2D_y0m4x")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-visible = false
-position_smoothing_enabled = true
-
 [node name="CameraRemote" type="RemoteTransform2D" parent="."]
 unique_name_in_owner = true
 

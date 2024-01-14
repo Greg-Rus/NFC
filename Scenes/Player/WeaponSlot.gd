@@ -37,5 +37,10 @@ func set_is_attacking(is_attacking: bool):
 
 func attack_apex_reached():
 	var bodies = attack_zone.get_overlapping_bodies()
+	var forward = global_transform.basis_xform(Vector2.RIGHT)
+
 	for enemy : Enemy in bodies:
-		weapon.deal_damage_to_enemy(enemy)
+		var enemy_direction = enemy.global_position - global_position
+		var angle_difference_degrees = rad_to_deg(absf(angle_difference(rotation, enemy_direction.angle())))
+		if(angle_difference_degrees < weapon.model.weapon_arc_degrees * 0.5):
+			weapon.deal_damage_to_enemy(enemy)

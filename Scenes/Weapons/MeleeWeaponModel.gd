@@ -7,6 +7,7 @@ var bonusses = []
 @export var base_damage : int = 10
 @export var stamina_cost : float = 20
 @export var range: float = 50
+@export var weapon_arc_degrees : float = 90
 
 var damage_table = {
 	Constants.DAMAGE_TABLE.DAMAGE : 0,

@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bhrnu2tmu4wyp"]
+[gd_scene load_steps=8 format=3 uid="uid://bhrnu2tmu4wyp"]
 
 [ext_resource type="Script" path="res://Scenes/Weapons/axe.gd" id="1_yrjq1"]
 [ext_resource type="PackedScene" uid="uid://c2pfstsp18uv7" path="res://Scenes/Weapons/sword_model.tscn" id="2_56dhc"]
 [ext_resource type="Texture2D" uid="uid://8wvhdiu1y6iv" path="res://Assets/Sprites/Items/RA_Item_Icons01.png" id="2_gnn14"]
 [ext_resource type="PackedScene" uid="uid://drygobspv6spc" path="res://Scenes/Weapons/DamageBonuses/crit_damage_bonus.tscn" id="3_cjtlg"]
 [ext_resource type="Texture2D" uid="uid://dv2g8djemyy5s" path="res://Assets/Sprites/Items/axe_mask.png" id="4_iw4s4"]
+[ext_resource type="PackedScene" uid="uid://2s0qmmvqbnm3" path="res://Scenes/Feedbacks/Trail_Renderer.tscn" id="6_iecky"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_77s5e"]
 radius = 8.0
@@ -35,5 +36,11 @@ texture = ExtResource("4_iw4s4")
 texture = ExtResource("2_gnn14")
 region_enabled = true
 region_rect = Rect2(0, 192, 16, 16)
+
+[node name="Line2D" parent="." node_paths=PackedStringArray("target") instance=ExtResource("6_iecky")]
+end_cap_mode = 2
+target = NodePath("..")
+point_count = 25
+point_spawn_frequency = 0.005
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
