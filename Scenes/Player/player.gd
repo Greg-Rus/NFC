@@ -1,7 +1,7 @@
 class_name Player
 extends CharacterBody2D
 
-@onready var animationTree : AnimationTree = $AnimationTree
+@onready var animationPlayer : AnimationPlayer = $AnimationPlayer
 @onready var sprite : Sprite2D = $Sprite2D
 @onready var weaponSlot : WeaponSlot = $WeaponSlotRoot
 @onready var axe_scene = preload("res://Scenes/Weapons/axe.tscn")
@@ -21,6 +21,7 @@ var read_mouse : bool = true
 var read_controller: bool = false
 var last_mouse_input : Vector2
 var viewport : Viewport
+var is_spinning : bool = false
 
 func _ready():
 	model = %Model
@@ -30,30 +31,36 @@ func _ready():
 	viewport = GameManager.main_camera.get_viewport()
 	camera_remote.remote_path = GameManager.main_camera.get_path()
 	attack_zone_indicator.init(weaponSlot.position, weaponSlot.weapon.model.range, weaponSlot.weapon.model.weapon_arc_degrees)
+	animationPlayer.play("iris_idle")
 	
 func _process(_delta):
-	input = Input.get_vector("left", "right", "up", "down")
+	read_input()
 	isWalking = input != Vector2.ZERO
-	animationTree["parameters/conditions/idle"] = !isWalking
+	is_spinning = Input.get_action_strength("spin") > 0
+	if(Input.is_action_just_pressed("spin")):
+		animationPlayer.play("iris_spin")
+	elif(!isWalking && !is_spinning):
+		animationPlayer.play("iris_idle")
 	if(Input.is_action_just_pressed("Throw")):
 		on_throw_action()
 
 func _physics_process(delta: float) -> void:
-	read_input()
 	if(isWalking):
 		velocity = input * model.walk_speed * delta * Constants.DELTA_MULTIPLIER
 		var walkingForward = (velocity.x > 0 && look_direction.x > 0) || (velocity.x < 0 && look_direction.x < 0)
-		animationTree["parameters/conditions/walking"] = walkingForward
-		animationTree["parameters/conditions/backing"] = !walkingForward
 		move_and_slide()
-	else:
-		animationTree["parameters/conditions/walking"] = false
-		animationTree["parameters/conditions/backing"] = false
+		
+		if(!is_spinning):
+			if(walkingForward):
+				animationPlayer.play("iris_run")
+			else:
+				animationPlayer.play("iris_run", -1, -1.0)
 	
 	try_flip_body()
 	aim_weapon()
 	
 func read_input():
+	input = Input.get_vector("left", "right", "up", "down")
 	if(read_mouse):
 		look_direction = get_global_mouse_position() - global_position
 		if(Input.get_vector("look_left", "look_right", "look_up", "look_down") != Vector2.ZERO):
@@ -70,7 +77,7 @@ func read_input():
 	last_mouse_input = viewport.get_mouse_position()
 	
 func try_flip_body() -> void:
-	isFlipped = look_direction.x < 0
+	isFlipped = weaponSlot.rotation_degrees > 90 || weaponSlot.rotation_degrees < -90
 	sprite.flip_h = isFlipped
 	
 func aim_weapon() -> void:

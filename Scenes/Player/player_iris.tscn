@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://b385dsdhhtn6h"]
+[gd_scene load_steps=20 format=3 uid="uid://b385dsdhhtn6h"]
 
 [ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_ahcg7"]
 [ext_resource type="Texture2D" uid="uid://286olsfwgydw" path="res://Assets/Sprites/Iris/Iris_Main.png" id="2_27228"]
@@ -37,10 +37,10 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3]
+"values": [0, 1, 2, 3, 4]
 }
 
 [sub_resource type="Animation" id="Animation_h8pd5"]
@@ -60,59 +60,33 @@ tracks/0/keys = {
 "values": [5, 6, 7, 8, 9, 10]
 }
 
+[sub_resource type="Animation" id="Animation_uin71"]
+resource_name = "iris_spin"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [12, 13, 14, 15]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bj4su"]
 _data = {
 "RESET": SubResource("Animation_xxulm"),
 "iris_idle": SubResource("Animation_884dx"),
-"iris_run": SubResource("Animation_h8pd5")
+"iris_run": SubResource("Animation_h8pd5"),
+"iris_spin": SubResource("Animation_uin71")
 }
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pqpq1"]
-animation = &"iris_idle"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tc4fg"]
-animation = &"iris_run"
-play_mode = 1
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_civlp"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qebic"]
-advance_mode = 2
-advance_condition = &"walking"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yun6e"]
-advance_mode = 2
-advance_condition = &"idle"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ks045"]
-advance_mode = 2
-advance_condition = &"backing"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ava45"]
-advance_mode = 2
-advance_condition = &"walking"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_exlc2"]
-advance_mode = 2
-advance_condition = &"idle"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ckydq"]
-advance_mode = 2
-advance_condition = &"backing"
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ojuia"]
-states/iris_idle/node = SubResource("AnimationNodeAnimation_pqpq1")
-states/iris_idle/position = Vector2(338.667, 100.444)
-states/iris_run/node = SubResource("AnimationNodeAnimation_tc4fg")
-states/iris_run/position = Vector2(543.334, 155.951)
-states/iris_run_back/node = SubResource("AnimationNodeAnimation_tc4fg")
-states/iris_run_back/position = Vector2(543.902, 8)
-transitions = ["Start", "iris_idle", SubResource("AnimationNodeStateMachineTransition_civlp"), "iris_idle", "iris_run", SubResource("AnimationNodeStateMachineTransition_qebic"), "iris_run", "iris_idle", SubResource("AnimationNodeStateMachineTransition_yun6e"), "iris_run", "iris_run_back", SubResource("AnimationNodeStateMachineTransition_ks045"), "iris_run_back", "iris_run", SubResource("AnimationNodeStateMachineTransition_ava45"), "iris_run_back", "iris_idle", SubResource("AnimationNodeStateMachineTransition_exlc2"), "iris_idle", "iris_run_back", SubResource("AnimationNodeStateMachineTransition_ckydq")]
-graph_offset = Vector2(-63, -57)
-
 [sub_resource type="Animation" id="Animation_1qdtp"]
-length = 0.2
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -277,11 +251,40 @@ tracks/3/keys = {
 "values": [Vector2(0, 3), Vector2(5, 1), Vector2(0, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_38sgq"]
+resource_name = "spin"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(5, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2n0nc"]
 _data = {
 "RESET": SubResource("Animation_1qdtp"),
 "SwordOberhau": SubResource("Animation_l3l42"),
-"SwordUnterhau": SubResource("Animation_3vo41")
+"SwordUnterhau": SubResource("Animation_3vo41"),
+"spin": SubResource("Animation_38sgq")
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y0m4x"]
@@ -309,7 +312,7 @@ _max_stamina = 100.0
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_27228")
 hframes = 4
-vframes = 3
+vframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 3.5)
@@ -319,16 +322,6 @@ shape = SubResource("CapsuleShape2D_pnlfx")
 libraries = {
 "": SubResource("AnimationLibrary_bj4su")
 }
-
-[node name="AnimationTree" type="AnimationTree" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_bj4su")
-}
-tree_root = SubResource("AnimationNodeStateMachine_ojuia")
-anim_player = NodePath("../AnimationPlayer")
-parameters/conditions/backing = false
-parameters/conditions/idle = false
-parameters/conditions/walking = false
 
 [node name="WeaponSlotRoot" type="Node2D" parent="."]
 position = Vector2(0, 1)

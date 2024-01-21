@@ -10,13 +10,15 @@ class_name WeaponSlot
 
 var isForwardAttack : bool = true
 var isAttacking : bool
+var is_spinning : bool = false
+var accumulated_spin : float
 
 func _ready():
 	attack_zone_top.rotation = deg_to_rad(weapon.model.weapon_arc_degrees * -0.5)
 	attack_zone_bottom.rotation = deg_to_rad(weapon.model.weapon_arc_degrees * 0.5)
 
-func _process(_delta):
-	if(Input.is_action_just_pressed("attack")):
+func _process(delta):
+	if(Input.is_action_just_pressed("attack") && !is_spinning):
 		if(!animationPlayer.is_playing()):
 			if(isForwardAttack):
 				animationPlayer.play("SwordOberhau")
@@ -25,8 +27,36 @@ func _process(_delta):
 			isForwardAttack = !isForwardAttack
 			set_is_attacking(true)
 			
-func set_weapon_rotation(angle: float):
-	if(!isAttacking):
+	if(Input.is_action_just_pressed("spin")):
+		animationPlayer.play("spin")
+		is_spinning = true
+		set_is_attacking(true)
+	if(Input.is_action_just_released("spin")):
+		animationPlayer.play("RESET")
+		is_spinning = false
+		accumulated_spin = 0
+		set_is_attacking(false)
+		
+	if(is_spinning):
+		process_spin(delta)
+		
+func process_spin(delta : float) -> void:
+	var rotation_delta = TAU / weapon.model.spin_duration_seconds * delta
+	accumulated_spin += rotation_delta
+	if(accumulated_spin >= TAU):
+		evaluate_spin_hit()
+		accumulated_spin = 0
+		
+	rotate(rotation_delta)
+	if(rotation > PI):
+		rotation = -PI
+		
+func evaluate_spin_hit():
+	for enemy in attack_zone_arc.get_overlapping_bodies():
+		weapon.deal_damage_to_enemy(enemy)
+			
+func set_weapon_rotation(angle: float) -> void:
+	if(!isAttacking && !is_spinning):
 		rotation = angle
 		
 	if(weaponSlot.global_rotation > -3 && weaponSlot.global_rotation < 0):
