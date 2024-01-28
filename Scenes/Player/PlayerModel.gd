@@ -70,11 +70,35 @@ var max_stamina : float:
 		return _max_stamina
 	set(val):
 		_max_stamina = val
+
+@export var _current_rage : float
+var current_rage : float:
+	get:
+		return _current_rage
+	set(val):
+		if(val < 0):
+			_current_rage = 0
+		elif(val > max_rage):
+			_current_rage = max_rage
+		else:
+			_current_rage = val
+		EventBus.rage_changed.emit(_current_rage, _max_rage)
+
+@export var _max_rage : float
+var max_rage : float:
+	get:
+		return _max_rage
+	set(val):
+		_max_rage = val
 		
 func _ready():
-	EventBus.stamina_drain.connect(func(drain:float): current_stamina -= drain)
+	#EventBus.stamina_drain.connect(func(drain:float): current_stamina -= drain)
+	EventBus.rage_gain.connect(func(gain : float): current_rage += gain)
+	EventBus.rage_drain.connect(func(drain : float): current_rage -= drain)
 	current_HP = max_HP
 	current_stamina = max_stamina
+	current_rage = 0
+	current_rage = max_rage
 
 func _process(delta):
 	if(current_stamina < max_stamina):

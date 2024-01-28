@@ -11,3 +11,7 @@ signal ranged_attack(is_attacking : bool)
 signal stamina_changed(current_stamina : float, max_stamina: float)
 signal stamina_drain(stamina_cost : float)
 signal axe_position(position : Vector2)
+
+signal rage_gain(rage : float)
+signal rage_drain(rage : float)
+signal rage_changed(rage : float, max_rage : float)

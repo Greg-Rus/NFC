@@ -28,23 +28,38 @@ func _process(delta):
 			set_is_attacking(true)
 			
 	if(Input.is_action_just_pressed("spin")):
-		animationPlayer.play("spin")
-		is_spinning = true
-		set_is_attacking(true)
+		if(GameManager.player.model.current_rage >= weapon.model.spin_rage_cost):
+			EventBus.rage_drain.emit(weapon.model.spin_rage_cost)
+			animationPlayer.play("spin")
+			is_spinning = true
+			set_is_attacking(true)
+			GameManager.player.on_spin_start()
+		
 	if(Input.is_action_just_released("spin")):
+		is_spinning = false
+		
+	if(is_spinning || accumulated_spin > 0): #even if input is over, complete the spin
+		process_spin(delta)
+		
+func can_spin() -> bool:
+	return GameManager.player.model.current_rage >= weapon.model.spin_rage_cost && is_spinning
+		
+func stop_spin():
 		animationPlayer.play("RESET")
 		is_spinning = false
 		accumulated_spin = 0
-		set_is_attacking(false)
 		
-	if(is_spinning):
-		process_spin(delta)
+		set_is_attacking(false)
 		
 func process_spin(delta : float) -> void:
 	var rotation_delta = TAU / weapon.model.spin_duration_seconds * delta
 	accumulated_spin += rotation_delta
 	if(accumulated_spin >= TAU):
 		evaluate_spin_hit()
+		if(can_spin()):
+			EventBus.rage_drain.emit(weapon.model.spin_rage_cost)
+		else:
+			stop_spin()
 		accumulated_spin = 0
 		
 	rotate(rotation_delta)
@@ -53,7 +68,7 @@ func process_spin(delta : float) -> void:
 		
 func evaluate_spin_hit():
 	for enemy in attack_zone_arc.get_overlapping_bodies():
-		weapon.deal_damage_to_enemy(enemy)
+		deal_damage(enemy)
 			
 func set_weapon_rotation(angle: float) -> void:
 	if(!isAttacking && !is_spinning):
@@ -91,4 +106,11 @@ func attack_apex_reached():
 			enemies[e] = e
 			
 	for enemy : Enemy in enemies.keys():
-			weapon.deal_damage_to_enemy(enemy)
+			deal_damage(enemy, true)
+			
+			
+func deal_damage(enemy : Enemy, should_generat_range : bool = false) -> void:
+	var damage_table = weapon.deal_damage_to_enemy(enemy)
+	if(should_generat_range):
+		var rage = damage_table[Constants.DAMAGE_TABLE.DAMAGE] * weapon.model.damage_to_rage_ratio
+		EventBus.rage_gain.emit(rage)

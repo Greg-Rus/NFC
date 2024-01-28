@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://b385dsdhhtn6h"]
+[gd_scene load_steps=21 format=3 uid="uid://b385dsdhhtn6h"]
 
 [ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_ahcg7"]
 [ext_resource type="Texture2D" uid="uid://286olsfwgydw" path="res://Assets/Sprites/Iris/Iris_Main.png" id="2_27228"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://1gdvtd6tre6m" path="res://Scenes/Weapons/sword.tscn" id="4_gasyu"]
 [ext_resource type="Script" path="res://Scenes/Player/PlayerModel.gd" id="5_h8o3l"]
 [ext_resource type="PackedScene" uid="uid://c1vqou6hdlnab" path="res://Scenes/Feedbacks/attack_zone_indicator.tscn" id="6_ylqh4"]
+[ext_resource type="Texture2D" uid="uid://vs5175pyb1p4" path="res://Assets/Sprites/UI/Generic_Progress_Bar_3x3.png" id="7_2f2ww"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pnlfx"]
 radius = 3.5
@@ -305,9 +306,9 @@ script = ExtResource("5_h8o3l")
 _max_HP = 6
 walk_speed = 50.0
 _xp_to_level_up = 10
-_current_stamina = 100.0
 _stamina_regen_per_second = 20.0
 _max_stamina = 100.0
+_max_rage = 100.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_27228")
@@ -377,3 +378,31 @@ unique_name_in_owner = true
 [node name="AttackZoneIndicator" parent="." instance=ExtResource("6_ylqh4")]
 unique_name_in_owner = true
 position = Vector2(0, 1)
+
+[node name="RageProgressBar" type="TextureProgressBar" parent="."]
+offset_left = -5.0
+offset_top = 10.0
+offset_right = 5.0
+offset_bottom = 11.0
+max_value = 1.0
+step = 0.01
+value = 0.5
+nine_patch_stretch = true
+texture_under = ExtResource("7_2f2ww")
+texture_progress = ExtResource("7_2f2ww")
+tint_under = Color(0.345098, 0.258824, 0, 0.505882)
+tint_progress = Color(1, 0.478431, 0, 1)
+
+[node name="HealthProgressBar" type="TextureProgressBar" parent="."]
+offset_left = -5.0
+offset_top = 9.0
+offset_right = 5.0
+offset_bottom = 10.0
+max_value = 1.0
+step = 0.01
+value = 0.5
+nine_patch_stretch = true
+texture_under = ExtResource("7_2f2ww")
+texture_progress = ExtResource("7_2f2ww")
+tint_under = Color(0.372549, 0, 0, 0.47451)
+tint_progress = Color(1, 0, 0, 1)

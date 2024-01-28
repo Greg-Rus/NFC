@@ -2,7 +2,7 @@ extends Area2D
 class_name Axe
 
 @onready var sprite : Sprite2D = $axe_mask
-@onready var model : MaleeWeaponModel = $SwordModel
+@onready var model : AxeModel = $AxeModel
 @export var speed : float
 @export var rotation_speed : float
 
@@ -32,11 +32,9 @@ func throw(direction : Vector2, throwing_player : Player) -> void:
 	throw_direction = direction
 	player = throwing_player
 	is_thrown = true
-	EventBus.stamina_drain.emit(model.stamina_cost)
 	
 func recall():
 	grounded = false
-	EventBus.stamina_drain.emit(model.stamina_cost)
 	is_recalled = true
 	sprite.self_modulate = Color.TRANSPARENT
 	sprite.clip_children = CanvasItem.CLIP_CHILDREN_DISABLED

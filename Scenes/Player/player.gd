@@ -7,6 +7,8 @@ extends CharacterBody2D
 @onready var axe_scene = preload("res://Scenes/Weapons/axe.tscn")
 @onready var camera_remote : RemoteTransform2D = %CameraRemote
 @onready var attack_zone_indicator : AttackZoneIndicator = $AttackZoneIndicator
+@onready var hp_bar : TextureProgressBar = $HealthProgressBar
+@onready var rage_bar : TextureProgressBar = $RageProgressBar
 
 var model : PlayerModel
 
@@ -21,7 +23,6 @@ var read_mouse : bool = true
 var read_controller: bool = false
 var last_mouse_input : Vector2
 var viewport : Viewport
-var is_spinning : bool = false
 
 func _ready():
 	model = %Model
@@ -32,17 +33,27 @@ func _ready():
 	camera_remote.remote_path = GameManager.main_camera.get_path()
 	attack_zone_indicator.init(weaponSlot.position, weaponSlot.weapon.model.range, weaponSlot.weapon.model.weapon_arc_degrees)
 	animationPlayer.play("iris_idle")
+	EventBus.player_HP_changed.connect(on_hp_change)
+	EventBus.rage_changed.connect(on_rage_change)
+	on_hp_change(model.current_HP, model.max_HP)
+	on_rage_change(model.current_rage, model.max_rage)
+	
+func on_hp_change(current : float, max : float):
+	hp_bar.value = current / max
+	
+func on_rage_change(current : float, max : float):
+	rage_bar.value = current / max
 	
 func _process(_delta):
 	read_input()
 	isWalking = input != Vector2.ZERO
-	is_spinning = Input.get_action_strength("spin") > 0
-	if(Input.is_action_just_pressed("spin")):
-		animationPlayer.play("iris_spin")
-	elif(!isWalking && !is_spinning):
+	if(!isWalking && !weaponSlot.is_spinning):
 		animationPlayer.play("iris_idle")
 	if(Input.is_action_just_pressed("Throw")):
 		on_throw_action()
+		
+func on_spin_start():
+	animationPlayer.play("iris_spin")
 
 func _physics_process(delta: float) -> void:
 	if(isWalking):
@@ -50,7 +61,7 @@ func _physics_process(delta: float) -> void:
 		var walkingForward = (velocity.x > 0 && look_direction.x > 0) || (velocity.x < 0 && look_direction.x < 0)
 		move_and_slide()
 		
-		if(!is_spinning):
+		if(!weaponSlot.is_spinning):
 			if(walkingForward):
 				animationPlayer.play("iris_run")
 			else:
@@ -114,10 +125,14 @@ func on_throw_action():
 		EventBus.ranged_attack.emit(true)
 	elif(axe.is_recalled): #ignore input if the axe is on it's way
 		return
-	else:
+	elif(can_recall_axe()):
+		EventBus.rage_drain.emit(axe.model.recall_rage_cost)
 		axe.recall()
 		
 func on_axe_returned():
 	axe.queue_free()
 	axe = null
 	EventBus.ranged_attack.emit(false)
+	
+func can_recall_axe() -> bool:
+	return axe != null && model.current_rage >= axe.model.recall_rage_cost && !axe.is_recalled

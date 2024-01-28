@@ -19,7 +19,7 @@ func _ready() -> void:
 	EventBus.player_HP_changed.connect(on_player_heath_change)
 	EventBus.XP_changed.connect(on_player_xp_changed)
 	EventBus.level_changed.connect(on_level_change)
-	EventBus.stamina_changed.connect(on_stamina_changed)
+	EventBus.rage_changed.connect(on_stamina_changed)
 	EventBus.ranged_attack.connect(on_ranged_attack)
 	EventBus.axe_position.connect(on_axe_position_change)
 	viewport_center = camera.get_viewport_rect().size * 0.5
