@@ -1,0 +1,79 @@
+[gd_resource type="SpriteFrames" load_steps=11 format=3 uid="uid://dv3ewevoxpedp"]
+
+[ext_resource type="Texture2D" uid="uid://cug6hy5jpg4wa" path="res://Assets/Sprites/VFX/Spin_1.png" id="1_aymql"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s8yb3"]
+atlas = ExtResource("1_aymql")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mwu8b"]
+atlas = ExtResource("1_aymql")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6bbap"]
+atlas = ExtResource("1_aymql")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wfxl6"]
+atlas = ExtResource("1_aymql")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4uhw"]
+atlas = ExtResource("1_aymql")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_drdru"]
+atlas = ExtResource("1_aymql")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xsfuj"]
+atlas = ExtResource("1_aymql")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2xife"]
+atlas = ExtResource("1_aymql")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_udd41"]
+atlas = ExtResource("1_aymql")
+region = Rect2(448, 0, 64, 64)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s8yb3")
+}],
+"loop": true,
+"name": &"RESET",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mwu8b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6bbap")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wfxl6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r4uhw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_drdru")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xsfuj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2xife")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_udd41")
+}],
+"loop": false,
+"name": &"spin_slash",
+"speed": 60.0
+}]

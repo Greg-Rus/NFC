@@ -30,9 +30,7 @@ func on_melee_attack(is_attacking):
 		particle.emitting = isAttacking
 		
 func on_spin_attack_change(is_spinning : bool):
-	print("spin: " + str(is_spinning))
-	var multiplier = 2 if is_spinning else 1
-	var duration = longest_particle_duration / particles.size() * multiplier
+	var duration = longest_particle_duration / particles.size()
 	for i in particles.size():
 		particles[i].lifetime = duration * i
 		particles[i].emitting = is_spinning

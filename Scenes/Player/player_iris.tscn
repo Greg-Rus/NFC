@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://b385dsdhhtn6h"]
+[gd_scene load_steps=22 format=3 uid="uid://b385dsdhhtn6h"]
 
 [ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_ahcg7"]
 [ext_resource type="Texture2D" uid="uid://286olsfwgydw" path="res://Assets/Sprites/Iris/Iris_Main.png" id="2_27228"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://Scenes/Player/PlayerModel.gd" id="5_h8o3l"]
 [ext_resource type="PackedScene" uid="uid://c1vqou6hdlnab" path="res://Scenes/Feedbacks/attack_zone_indicator.tscn" id="6_ylqh4"]
 [ext_resource type="Texture2D" uid="uid://vs5175pyb1p4" path="res://Assets/Sprites/UI/Generic_Progress_Bar_3x3.png" id="7_2f2ww"]
+[ext_resource type="SpriteFrames" uid="uid://dv3ewevoxpedp" path="res://Scenes/Feedbacks/spin_slash.tres" id="8_ud7el"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pnlfx"]
 radius = 3.5
@@ -395,3 +396,10 @@ texture_under = ExtResource("7_2f2ww")
 texture_progress = ExtResource("7_2f2ww")
 tint_under = Color(0.372549, 0, 0, 0.47451)
 tint_progress = Color(1, 0, 0, 1)
+
+[node name="Vfx" type="Node2D" parent="."]
+
+[node name="SpinSlash" type="AnimatedSprite2D" parent="Vfx"]
+unique_name_in_owner = true
+sprite_frames = ExtResource("8_ud7el")
+animation = &"RESET"

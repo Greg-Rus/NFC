@@ -7,6 +7,7 @@ class_name WeaponSlot
 @onready var attack_zone_top : Area2D = %AttackZoneEdgeTop
 @onready var attack_zone_bottom : Area2D = %AttackZoneEdgeBottom
 @onready var weapon : Weapon = $WeaponSlot/Sword
+@onready var spin_slash_vfx : AnimatedSprite2D = %SpinSlash
 var attack_progress : float
 
 var isForwardAttack : bool = true
@@ -35,7 +36,6 @@ func _process(delta):
 			animationPlayer.play("spin")
 			is_spinning = true
 			EventBus.spin_attack_change.emit(true)
-			#set_is_attacking(true)
 			GameManager.player.on_spin_start()
 		
 	#if(Input.is_action_just_released("spin")):
@@ -64,6 +64,7 @@ func process_spin(delta : float) -> void:
 	accumulated_spin += rotation_delta
 	EventBus.spin_attack_progress.emit(accumulated_spin / TAU)
 	if(accumulated_spin >= TAU):
+		spin_slash_vfx.play("spin_slash")
 		evaluate_spin_hit()
 		if(can_spin()):
 			EventBus.rage_drain.emit(weapon.model.spin_rage_cost)
