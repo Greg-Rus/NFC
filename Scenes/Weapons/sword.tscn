@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://1gdvtd6tre6m"]
+[gd_scene load_steps=10 format=3 uid="uid://1gdvtd6tre6m"]
 
 [ext_resource type="Script" path="res://Scenes/Weapons/melee_weapon.gd" id="1_0sj3y"]
 [ext_resource type="Texture2D" uid="uid://dpi8x42pe605y" path="res://Assets/Sprites/Items/Sword.png" id="1_tlbbo"]
@@ -11,8 +11,14 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_monuu"]
 size = Vector2(4, 15)
 
-[node name="Sword" type="Node2D"]
+[sub_resource type="Gradient" id="Gradient_ofmea"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Sword" type="Node2D" node_paths=PackedStringArray("particles")]
 script = ExtResource("1_0sj3y")
+particles = [NodePath("CPUParticles2D"), NodePath("CPUParticles2D2"), NodePath("CPUParticles2D3")]
+longest_particle_duration = 0.2
+particle_transparency = 0.3
 
 [node name="SwordModel" parent="." instance=ExtResource("2_a6hv3")]
 range = 23.0
@@ -43,5 +49,35 @@ collision_mask = 8
 position = Vector2(0, -11)
 shape = SubResource("RectangleShape2D_monuu")
 disabled = true
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2(11, 0)
+amount = 300
+lifetime = 0.05
+emission_shape = 3
+emission_rect_extents = Vector2(6, 1)
+gravity = Vector2(0, 0)
+color_ramp = SubResource("Gradient_ofmea")
+
+[node name="CPUParticles2D2" type="CPUParticles2D" parent="."]
+position = Vector2(14, 0)
+amount = 300
+lifetime = 0.1
+emission_shape = 3
+emission_rect_extents = Vector2(3, 1)
+gravity = Vector2(0, 0)
+color_ramp = SubResource("Gradient_ofmea")
+
+[node name="CPUParticles2D3" type="CPUParticles2D" parent="."]
+position = Vector2(16, 0)
+amount = 300
+lifetime = 0.2
+fract_delta = false
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+direction = Vector2(0, 0)
+spread = 0.0
+gravity = Vector2(0, 0)
+color_ramp = SubResource("Gradient_ofmea")
 
 [connection signal="body_entered" from="Sprite2D/Area2D" to="." method="_on_area_2d_body_entered"]

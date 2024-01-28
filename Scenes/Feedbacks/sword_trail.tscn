@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://c21x687r8pwiw"]
+[gd_scene load_steps=3 format=3 uid="uid://c21x687r8pwiw"]
 
 [ext_resource type="Script" path="res://Scenes/Feedbacks/sword_trail.gd" id="1_1fi6v"]
 
+[sub_resource type="Curve" id="Curve_k5fv3"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [node name="SwordTrail" type="Line2D"]
+width_curve = SubResource("Curve_k5fv3")
 script = ExtResource("1_1fi6v")
+point_count = 25
+point_spawn_frequency = 0.01

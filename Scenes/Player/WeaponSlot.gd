@@ -7,11 +7,13 @@ class_name WeaponSlot
 @onready var attack_zone_top : Area2D = %AttackZoneEdgeTop
 @onready var attack_zone_bottom : Area2D = %AttackZoneEdgeBottom
 @onready var weapon : Weapon = $WeaponSlot/Sword
+var attack_progress : float
 
 var isForwardAttack : bool = true
 var isAttacking : bool
 var is_spinning : bool = false
 var accumulated_spin : float
+var starting_attack_rotation : float
 
 func _ready():
 	attack_zone_top.rotation = deg_to_rad(weapon.model.weapon_arc_degrees * -0.5)
@@ -32,28 +34,35 @@ func _process(delta):
 			EventBus.rage_drain.emit(weapon.model.spin_rage_cost)
 			animationPlayer.play("spin")
 			is_spinning = true
-			set_is_attacking(true)
+			EventBus.spin_attack_change.emit(true)
+			#set_is_attacking(true)
 			GameManager.player.on_spin_start()
 		
-	if(Input.is_action_just_released("spin")):
-		is_spinning = false
+	#if(Input.is_action_just_released("spin")):
+		#is_spinning = false
 		
 	if(is_spinning || accumulated_spin > 0): #even if input is over, complete the spin
 		process_spin(delta)
 		
+	if(isAttacking):
+		var progress = (starting_attack_rotation - abs(weaponSlot.rotation)) / starting_attack_rotation
+		EventBus.melee_attack_progress.emit(progress)
+		
 func can_spin() -> bool:
-	return GameManager.player.model.current_rage >= weapon.model.spin_rage_cost && is_spinning
+	return GameManager.player.model.current_rage >= weapon.model.spin_rage_cost && is_spinning && Input.get_action_strength("spin") > 0
 		
 func stop_spin():
 		animationPlayer.play("RESET")
 		is_spinning = false
 		accumulated_spin = 0
 		
+		EventBus.spin_attack_change.emit(false)
 		set_is_attacking(false)
 		
 func process_spin(delta : float) -> void:
 	var rotation_delta = TAU / weapon.model.spin_duration_seconds * delta
 	accumulated_spin += rotation_delta
+	EventBus.spin_attack_progress.emit(accumulated_spin / TAU)
 	if(accumulated_spin >= TAU):
 		evaluate_spin_hit()
 		if(can_spin()):
@@ -85,6 +94,7 @@ func on_attack_animation_done():
 func set_is_attacking(is_attacking: bool):
 	isAttacking = is_attacking
 	EventBus.melee_attack.emit(is_attacking)
+	starting_attack_rotation = abs(weaponSlot.rotation)
 
 func attack_apex_reached():
 	var enemies = {}

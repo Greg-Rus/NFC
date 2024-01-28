@@ -182,17 +182,6 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector2(0, 1), Vector2(5, 1), Vector2(0, 3)]
 }
-tracks/4/type = "method"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Sword")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(),
-"transitions": PackedFloat32Array(),
-"values": []
-}
 
 [sub_resource type="Animation" id="Animation_3vo41"]
 resource_name = "SwordUnterhau"
