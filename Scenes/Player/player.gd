@@ -9,6 +9,8 @@ extends CharacterBody2D
 @onready var attack_zone_indicator : AttackZoneIndicator = $AttackZoneIndicator
 @onready var hp_bar : TextureProgressBar = $HealthProgressBar
 @onready var rage_bar : TextureProgressBar = $RageProgressBar
+@onready var collision_shape : CollisionShape2D = $CollisionShape2D
+@onready var dash_vfx : DashTrail = $Vfx/DashTrail
 
 var model : PlayerModel
 
@@ -16,13 +18,16 @@ var isFlipped : bool = false
 var invincibility_timer : Timer
 var hit_tween : Tween
 var isWalking : bool
-var input : Vector2
+var walk_input : Vector2
 var look_direction : Vector2
 var axe : Axe
 var read_mouse : bool = true
 var read_controller: bool = false
 var last_mouse_input : Vector2
 var viewport : Viewport
+var is_dashing : bool = false
+var dash_origin : Vector2
+var dash_direction : Vector2
 
 func _ready():
 	model = %Model
@@ -46,32 +51,46 @@ func on_rage_change(current : float, max : float):
 	
 func _process(_delta):
 	read_input()
-	isWalking = input != Vector2.ZERO
+	isWalking = walk_input != Vector2.ZERO
 	if(!isWalking && !weaponSlot.is_spinning):
 		animationPlayer.play("iris_idle")
 	if(Input.is_action_just_pressed("Throw")):
 		on_throw_action()
+	if(Input.is_action_just_pressed("Dash")):
+		if(model.can_dahs()):
+			start_dash()
 		
 func on_spin_start():
 	animationPlayer.play("iris_spin")
 
 func _physics_process(delta: float) -> void:
-	if(isWalking):
-		velocity = input * model.walk_speed * delta * Constants.DELTA_MULTIPLIER
+	if(isWalking && !is_dashing):
+		velocity = walk_input * model.walk_speed * delta * Constants.DELTA_MULTIPLIER
 		var walkingForward = (velocity.x > 0 && look_direction.x > 0) || (velocity.x < 0 && look_direction.x < 0)
 		move_and_slide()
-		
+				
 		if(!weaponSlot.is_spinning):
 			if(walkingForward):
 				animationPlayer.play("iris_run")
 			else:
 				animationPlayer.play("iris_run", -1, -1.0)
-	
+				
+	if(isWalking && is_dashing):
+		velocity = walk_input * model.dash_speed * delta * Constants.DELTA_MULTIPLIER
+		move_and_slide()
+		var dash_progress = dash_origin.distance_to(global_position) / model.dash_distance
+		if(dash_progress >= 1):
+			end_dash()
+		else:
+			dash_vfx.update(dash_progress)
+		
 	try_flip_body()
 	aim_weapon()
 	
 func read_input():
-	input = Input.get_vector("left", "right", "up", "down")
+	if(!is_dashing):
+		walk_input = Input.get_vector("left", "right", "up", "down")
+	
 	if(read_mouse):
 		look_direction = get_global_mouse_position() - global_position
 		if(Input.get_vector("look_left", "look_right", "look_up", "look_down") != Vector2.ZERO):
@@ -123,7 +142,7 @@ func on_throw_action():
 		axe.global_position = global_position
 		axe.throw(look_direction.normalized(), self)
 		EventBus.ranged_attack.emit(true)
-	elif(axe.is_recalled): #ignore input if the axe is on it's way
+	elif(axe.is_recalled): #ignore walk_input if the axe is on it's way
 		return
 	elif(can_recall_axe()):
 		EventBus.rage_drain.emit(axe.model.recall_rage_cost)
@@ -136,3 +155,14 @@ func on_axe_returned():
 	
 func can_recall_axe() -> bool:
 	return axe != null && model.current_rage >= axe.model.recall_rage_cost && !axe.is_recalled
+	
+func start_dash() -> void:
+	model.deduct_rage_for_dash()
+	is_dashing = true
+	dash_origin = global_position
+	collision_shape.disabled = true
+	dash_vfx.start()
+
+func end_dash() -> void:
+	is_dashing = false
+	collision_shape.disabled = false

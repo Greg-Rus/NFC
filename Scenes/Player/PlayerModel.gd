@@ -91,6 +91,10 @@ var max_rage : float:
 	set(val):
 		_max_rage = val
 		
+@export var dash_distance : float
+@export var dash_speed : float
+@export var dash_cost : float
+		
 func _ready():
 	#EventBus.stamina_drain.connect(func(drain:float): current_stamina -= drain)
 	EventBus.rage_gain.connect(func(gain : float): current_rage += gain)
@@ -103,4 +107,10 @@ func _ready():
 func _process(delta):
 	if(current_stamina < max_stamina):
 		current_stamina += _stamina_regen_per_second * delta
+		
+func can_dahs() -> bool:
+	return current_rage >= dash_cost
+	
+func deduct_rage_for_dash() -> void:
+	current_rage -= dash_cost
 		

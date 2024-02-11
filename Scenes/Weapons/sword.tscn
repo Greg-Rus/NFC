@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://1gdvtd6tre6m"]
+[gd_scene load_steps=9 format=3 uid="uid://1gdvtd6tre6m"]
 
 [ext_resource type="Script" path="res://Scenes/Weapons/melee_weapon.gd" id="1_0sj3y"]
 [ext_resource type="Texture2D" uid="uid://dpi8x42pe605y" path="res://Assets/Sprites/Items/Sword.png" id="1_tlbbo"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://drygobspv6spc" path="res://Scenes/Weapons/DamageBonuses/crit_damage_bonus.tscn" id="3_8cwei"]
 [ext_resource type="PackedScene" uid="uid://omyrx6xcxve0" path="res://Scenes/Weapons/DamageBonuses/cleave_damage_bonus.tscn" id="4_oykfe"]
 [ext_resource type="PackedScene" uid="uid://cexoweaqr1vkv" path="res://Scenes/Weapons/DamageBonuses/charging_throw.tscn" id="5_mhucf"]
-[ext_resource type="PackedScene" uid="uid://cgnq613bir1pe" path="res://Scenes/Weapons/low_stamina_debuf.tscn" id="6_khvfp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_monuu"]
 size = Vector2(4, 15)
@@ -29,9 +28,6 @@ range = 23.0
 
 [node name="ChargingThrow" parent="SwordModel" instance=ExtResource("5_mhucf")]
 bonus_multiplier_percentage = 2
-
-[node name="LowStaminaDebuf" parent="SwordModel" instance=ExtResource("6_khvfp")]
-bonus_multiplier_percentage = -80
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(8, 0)

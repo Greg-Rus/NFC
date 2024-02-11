@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b385dsdhhtn6h"]
+[gd_scene load_steps=23 format=3 uid="uid://b385dsdhhtn6h"]
 
 [ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_ahcg7"]
 [ext_resource type="Texture2D" uid="uid://286olsfwgydw" path="res://Assets/Sprites/Iris/Iris_Main.png" id="2_27228"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://c1vqou6hdlnab" path="res://Scenes/Feedbacks/attack_zone_indicator.tscn" id="6_ylqh4"]
 [ext_resource type="Texture2D" uid="uid://vs5175pyb1p4" path="res://Assets/Sprites/UI/Generic_Progress_Bar_3x3.png" id="7_2f2ww"]
 [ext_resource type="SpriteFrames" uid="uid://dv3ewevoxpedp" path="res://Scenes/Feedbacks/spin_slash.tres" id="8_ud7el"]
+[ext_resource type="Script" path="res://Scenes/Player/DashTrail.gd" id="9_eg2ab"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pnlfx"]
 radius = 3.5
@@ -299,6 +300,9 @@ _xp_to_level_up = 10
 _stamina_regen_per_second = 20.0
 _max_stamina = 100.0
 _max_rage = 100.0
+dash_distance = 75.0
+dash_speed = 300.0
+dash_cost = 10.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_27228")
@@ -403,3 +407,89 @@ tint_progress = Color(1, 0, 0, 1)
 unique_name_in_owner = true
 sprite_frames = ExtResource("8_ud7el")
 animation = &"RESET"
+
+[node name="DashTrail" type="Node2D" parent="Vfx" node_paths=PackedStringArray("sprites", "character_sprite")]
+script = ExtResource("9_eg2ab")
+sprites = [NodePath("Sprite2D"), NodePath("Sprite2D2"), NodePath("Sprite2D3"), NodePath("Sprite2D4"), NodePath("Sprite2D5"), NodePath("Sprite2D6"), NodePath("Sprite2D7"), NodePath("Sprite2D8"), NodePath("Sprite2D9"), NodePath("Sprite2D10")]
+character_sprite = NodePath("../../Sprite2D")
+start_color = Color(0.627451, 0.286275, 0.901961, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="Vfx/DashTrail"]
+top_level = true
+z_index = 6
+texture = ExtResource("2_27228")
+hframes = 4
+vframes = 4
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Vfx/DashTrail"]
+top_level = true
+z_index = 6
+texture = ExtResource("2_27228")
+hframes = 4
+vframes = 4
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Sprite2D3" type="Sprite2D" parent="Vfx/DashTrail"]
+top_level = true
+z_index = 6
+texture = ExtResource("2_27228")
+hframes = 4
+vframes = 4
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Sprite2D4" type="Sprite2D" parent="Vfx/DashTrail"]
+top_level = true
+z_index = 6
+texture = ExtResource("2_27228")
+hframes = 4
+vframes = 4
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Sprite2D5" type="Sprite2D" parent="Vfx/DashTrail"]
+top_level = true
+z_index = 6
+texture = ExtResource("2_27228")
+hframes = 4
+vframes = 4
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Sprite2D6" type="Sprite2D" parent="Vfx/DashTrail"]
+top_level = true
+z_index = 6
+texture = ExtResource("2_27228")
+hframes = 4
+vframes = 4
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Sprite2D7" type="Sprite2D" parent="Vfx/DashTrail"]
+top_level = true
+z_index = 6
+texture = ExtResource("2_27228")
+hframes = 4
+vframes = 4
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Sprite2D8" type="Sprite2D" parent="Vfx/DashTrail"]
+top_level = true
+z_index = 6
+texture = ExtResource("2_27228")
+hframes = 4
+vframes = 4
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Sprite2D9" type="Sprite2D" parent="Vfx/DashTrail"]
+top_level = true
+z_index = 6
+texture = ExtResource("2_27228")
+hframes = 4
+vframes = 4
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="Sprite2D10" type="Sprite2D" parent="Vfx/DashTrail"]
+top_level = true
+z_index = 6
+texture = ExtResource("2_27228")
+hframes = 4
+vframes = 4
+region_rect = Rect2(0, 0, 16, 16)
